@@ -1,0 +1,16 @@
+# Ignore everything
+
+
+# But not these files...
+!.gitignore
+!*.bib
+!*.csv
+!*.m
+!*.py
+!*.tex
+
+
+# etc...
+
+# ...even if they are in subdirectories
+!*/
