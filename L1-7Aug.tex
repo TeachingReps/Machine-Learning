@@ -55,7 +55,7 @@ It can be easily shown that $\mathbb{E} \hat{R}(h) = R(h)$ by using the fact tha
 \subsection{Linear Classification}
 
 \begin{assum}
-Let $N>1$, $\mathcal{X} = R^N$ and $\mathcal{Y} = \{-1, 1\}$. Let the target function be $f:\mathcal{X} \rightarrow \mathcal{Y}$. Let the hypothesis set be defined by
+Let $N>1$, $\mathcal{X} = \mathbb{R}^N$ and $\mathcal{Y} = \{-1, 1\}$. Let the target function be $f:\mathcal{X} \rightarrow \mathcal{Y}$. Let the hypothesis set be defined by
 $$ H = \left\{ \textrm{affine functions of }\mathcal{X} \right\} $$
 Let the training samples be denoted by $S = \left\{ (x_1, y_1), (x_2, y_2), ... , (x_m, y_m) \right\}$ where $ y_i = f(x_i)$, $x_i \in \mathbb{R}$, $x_i \overset{iid} \sim D$
 
@@ -75,10 +75,12 @@ $$S_2 = \left\{ (x,y): \langle w,x \rangle +b < 0  \right\}$$
 
 \end{assum}
 
-Let $\langle w,x \rangle + b = 0$ be one such plane. The assumption above confirms the existence of at least one pair $(w,b)$. Normalize $(w,b)$ using $\underset{x_i \in S} {\mathrm{min}} \left\{ \langle w,x_i \rangle + b \right\}$. Let $\rho$ be the point with the minimum distance to the plane.
-$$ \rho = \underset{x_i \in S} {\mathrm{min}} \frac{\langle w,x_i \rangle + b}{\| w \|_2} $$
-If the closest point is $x_0$ then
+Let $\langle w,x \rangle + b = 0$ be one such plane. The assumption above confirms the existence of at least one pair $(w,b)$. Normalize $(w,b)$ using $\underset{x_i \in S} {\mathrm{min}} \left\{ \langle w,x_i \rangle + b \right\}$. Then, if the closest point is $x_0$
 $$ \langle w,x_0 \rangle + b = 1 $$
+
+Let $\rho$ be the minimum distance of any point to the plane.
+$$ \rho = \underset{x_i \in S} {\mathrm{min}} \frac{\langle w,x_i \rangle + b}{\| w \|_2} $$
+
 Since $w$ is independent of choice of $x_i$,
 $$ \rho = \underset{x_i \in S} {\mathrm{min}} \frac{\langle w,x_i \rangle + b}{\| w \|_2} = \frac{\underset{x_i \in S} {\mathrm{min}} \left\{\langle w,x_i \rangle + b\right\}}{\| w \|_2} = \frac{1}{\|w\|_2} $$
 
