@@ -1,0 +1,133 @@
+\documentclass[a4paper,english,12pt]{article}
+\input{header}
+
+%opening
+\title{Lecture-1 (7th August, 2018)}
+\author{Shrey Gupta}
+
+\begin{document}
+\maketitle
+
+\section{Basic Definitions}
+
+\begin{defn}
+The input space ($\mathcal{X}$) is the set of all possible examples/instances.
+\end{defn}
+
+\begin{defn}
+The output space ($\mathcal{Y}$) is the set of all possible labels/targets.
+\end{defn}
+
+\begin{defn}
+A concept $c:\mathcal{X} \rightarrow \mathcal{Y}$ is a mapping from input space to ouptut space.
+\end{defn}
+
+\begin{defn}
+The set of all true concepts is called the concept class ($C$).
+\end{defn}
+
+\begin{defn}
+The set of all possible candidate concepts is called the hypothesis class ($H$).
+\end{defn}
+
+\begin{assum}
+All examples in $\mathcal{X}$ are identically and independently distributed (iid) with an underlying distribution $D$.
+\end{assum}
+
+\begin{defn}
+When training data $\{ (x_1, y_1), (x_2, y_2), ... , (x_n, y_n) \}$ is given such that $y_i = c(x_i)$ where $c$ is the underlying concept, and the program's job is to guess a hypothesis $h \in H$ so as to minimize the generalization error with respect to $c$, it is called supervised learning.
+\end{defn}
+
+\begin{defn}
+Given a hypothesis $h\in H$, target concept $c$ and an underlying distribution $D$, the generalization error (risk) is defined as
+$$ R(h) = \underset{\mathcal{X} \sim D} P \left[ h(x) \neq c(x) \right] $$
+which can also be expressed as an expectation value
+$$ R(h) = \underset{\mathcal{X} \sim D}{\mathbb{E}} 1_{ \left\{ h(x) \neq c(x) \right\}} $$
+\end{defn}
+
+\begin{defn}
+The empirical error $(\hat{R}(h))$ is defined as
+$$ \hat{R}(h) = \frac{1}{m} \sum_{i=1}^m 1_{ \left\{ h(x_i) \neq c(x_i) \right\} }$$
+It can be easily shown that $\mathbb{E} \hat{R}(h) = R(h)$ by using the fact that $\mathbb{E} \sum p_i = \sum \mathbb{E} p_i$
+\end{defn}
+
+\section{Support Vector Machines}
+\subsection{Linear Classification}
+
+\begin{assum}
+Let $N>1$, $\mathcal{X} = R^N$ and $\mathcal{Y} = \{-1, 1\}$. Let the target function be $f:\mathcal{X} \rightarrow \mathcal{Y}$. Let the hypothesis set be defined by
+$$ H = \left\{ \textrm{affine functions of }\mathcal{X} \right\} $$
+Let the training samples be denoted by $S = \left\{ (x_1, y_1), (x_2, y_2), ... , (x_m, y_m) \right\}$ where $ y_i = f(x_i)$, $x_i \in \mathbb{R}$, $x_i \overset{iid} \sim D$
+
+\end{assum}
+
+The problem here is to determine $h \in H$ such that $R_D (h)$ is minimized.
+$$ R_D (h) = \underset{\mathcal{X} \sim D} P \left[ h(x) \neq c(x) \right] $$
+
+To do this, let's plot all the points in $\mathcal{X}$ in an $N$ dimensional space.
+
+\begin{assum}
+The training sample $S$ can be separated into two non-empty sets by a hyperplane. In other words, there exists a hyperplane given by
+$$ \langle w,x \rangle + b = 0 $$
+such that $S=S_1 \cup S_2$ and $S_1 \cap S_2 = \phi$ where
+$$S_1 = \left\{ (x,y): \langle w,x \rangle +b > 0  \right\}$$
+$$S_2 = \left\{ (x,y): \langle w,x \rangle +b < 0  \right\}$$
+
+\end{assum}
+
+Let $\langle w,x \rangle + b = 0$ be one such plane. The assumption above confirms the existence of at least one pair $(w,b)$. Normalize $(w,b)$ using $\underset{x_i \in S} {\mathrm{min}} \left\{ \langle w,x_i \rangle + b \right\}$. Let $\rho$ be the point with the minimum distance to the plane.
+$$ \rho = \underset{x_i \in S} {\mathrm{min}} \frac{\langle w,x_i \rangle + b}{\| w \|_2} $$
+If the closest point is $x_0$ then
+$$ \langle w,x_0 \rangle + b = 1 $$
+Since $w$ is independent of choice of $x_i$,
+$$ \rho = \underset{x_i \in S} {\mathrm{min}} \frac{\langle w,x_i \rangle + b}{\| w \|_2} = \frac{\underset{x_i \in S} {\mathrm{min}} \left\{\langle w,x_i \rangle + b\right\}}{\| w \|_2} = \frac{1}{\|w\|_2} $$
+
+Hence our original problem statement translates to finding $(w,b)$ so as to maximize $\rho$ which in turn boils down to finding $\mathrm{min} \|w\|_2$ given the constraint
+$$ y_i \left(\langle w,x_i \rangle + b \right) \geq 1 $$
+
+\section{More definitions}
+
+\begin{defn}[Gradient]
+
+Let $f:X\subset\mathbb{R}^N\rightarrow\mathbb{R}$, then
+
+$$ \nabla f(x) = \left[  \begin{array}{ccc} \frac{\partial f}{\partial x_1} (x) \\ \vdots \\ \frac{\partial f}{\partial x_N} (x)
+\end{array}  \right] $$
+
+\end{defn}
+
+\begin{defn}[Hessian]
+
+Let $f:X\subset\mathbb{R}^N\rightarrow\mathbb{R}$, then
+
+$$ \nabla ^2 f(x) = \left[  \frac{\partial ^2 f}{\partial x_i \partial x_j}  \right]_{1 \leq i, j \leq N} $$
+
+\end{defn}
+
+\begin{defn}[Stationary Point]
+If $f$ attains a local extremum at $x' = x$ then $\nabla f(x') = 0$. $x'$ is called a stationary point.
+\end{defn}
+
+\begin{defn}[Convex Set]
+A set $X$ is called convex if $\forall x,y \in X$ and $\alpha \in [0,1]$,
+$$ \alpha x + (1-\alpha) y \in X $$
+\end{defn}
+
+\begin{defn}[Convex Hull]
+A convex hull of a set $A$ is the smallest convex set including $A$.
+$$ conv(A) = \left\{ \sum_{x_i \in A} \alpha _i x_i : 0 \leq \alpha _i \leq 1 , \sum \alpha _i = 1 \right\} $$
+\end{defn}
+
+\begin{defn}[Convex Function]
+Let $\mathcal{X} \subset \mathbb{R}^N$ be a convex set. Then $f: \mathcal{X}\rightarrow\mathbb{R}$ is a convex function if
+$$ f\left( \alpha x + (1-\alpha)y \right) \leq \alpha f(x) + (1-\alpha) f(y) $$
+
+If f is differentiable then it is convex if
+$$ f(y) - f(x) \geq \langle \nabla f(x), {y-x} \rangle $$
+
+If f is twice differentiable then it is convex if
+$$ \nabla ^2 f \geq 0 $$
+Or in other words, if $\nabla ^2 f$ is a positive semi-definite matrix.
+\end{defn}
+
+\end{document}
