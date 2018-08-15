@@ -1,8 +1,9 @@
 \documentclass[a4paper,english,12pt]{article}
-\input{header}
+\input{../header}
 
 %opening
-\title{Lecture-1 (7th August, 2018)}
+\title{Lecture-01}
+\date{Aug 07, 2018}
 \author{Shrey Gupta}
 
 \begin{document}
@@ -11,15 +12,15 @@
 \section{Basic Definitions}
 
 \begin{defn}
-The input space ($\mathcal{X}$) is the set of all possible examples/instances.
+The input space ($\sX$) is the set of all possible examples/instances.
 \end{defn}
 
 \begin{defn}
-The output space ($\mathcal{Y}$) is the set of all possible labels/targets.
+The output space ($\sY$) is the set of all possible labels/targets.
 \end{defn}
 
 \begin{defn}
-A concept $c:\mathcal{X} \rightarrow \mathcal{Y}$ is a mapping from input space to ouptut space.
+A concept $c:\sX \rightarrow \sY$ is a mapping from input space to ouptut space.
 \end{defn}
 
 \begin{defn}
@@ -31,7 +32,7 @@ The set of all possible candidate concepts is called the hypothesis class ($H$).
 \end{defn}
 
 \begin{assum}
-All examples in $\mathcal{X}$ are identically and independently distributed (iid) with an underlying distribution $D$.
+All examples in $\sX$ are identically and independently distributed (iid) with an underlying distribution $D$.
 \end{assum}
 
 \begin{defn}
@@ -40,9 +41,9 @@ When training data $\{ (x_1, y_1), (x_2, y_2), ... , (x_n, y_n) \}$ is given suc
 
 \begin{defn}
 Given a hypothesis $h\in H$, target concept $c$ and an underlying distribution $D$, the generalization error (risk) is defined as
-$$ R(h) = \underset{\mathcal{X} \sim D} P \left[ h(x) \neq c(x) \right] $$
+$$ R(h) = \underset{\sX \sim D} P \left[ h(x) \neq c(x) \right] $$
 which can also be expressed as an expectation value
-$$ R(h) = \underset{\mathcal{X} \sim D}{\mathbb{E}} 1_{ \left\{ h(x) \neq c(x) \right\}} $$
+$$ R(h) = \underset{\sX \sim D}{\mathbb{E}} 1_{ \left\{ h(x) \neq c(x) \right\}} $$
 \end{defn}
 
 \begin{defn}
@@ -55,16 +56,16 @@ It can be easily shown that $\mathbb{E} \hat{R}(h) = R(h)$ by using the fact tha
 \subsection{Linear Classification}
 
 \begin{assum}
-Let $N>1$, $\mathcal{X} = \mathbb{R}^N$ and $\mathcal{Y} = \{-1, 1\}$. Let the target function be $f:\mathcal{X} \rightarrow \mathcal{Y}$. Let the hypothesis set be defined by
-$$ H = \left\{ \textrm{affine functions of }\mathcal{X} \right\} $$
+Let $N>1$, $\sX = \mathbb{R}^N$ and $\sY = \{-1, 1\}$. Let the target function be $f:\sX \rightarrow \sY$. Let the hypothesis set be defined by
+$$ H = \left\{ \textrm{affine functions of }\sX \right\} $$
 Let the training samples be denoted by $S = \left\{ (x_1, y_1), (x_2, y_2), ... , (x_m, y_m) \right\}$ where $ y_i = f(x_i)$, $x_i \in \mathbb{R}$, $x_i \overset{iid} \sim D$
 
 \end{assum}
 
 The problem here is to determine $h \in H$ such that $R_D (h)$ is minimized.
-$$ R_D (h) = \underset{\mathcal{X} \sim D} P \left[ h(x) \neq c(x) \right] $$
+$$ R_D (h) = \underset{\sX \sim D} P \left[ h(x) \neq c(x) \right] $$
 
-To do this, let's plot all the points in $\mathcal{X}$ in an $N$ dimensional space.
+To do this, let's plot all the points in $\sX$ in an $N$ dimensional space.
 
 \begin{assum}
 The training sample $S$ can be separated into two non-empty sets by a hyperplane. In other words, there exists a hyperplane given by
@@ -121,7 +122,7 @@ $$ conv(A) = \left\{ \sum_{x_i \in A} \alpha _i x_i : 0 \leq \alpha _i \leq 1 , 
 \end{defn}
 
 \begin{defn}[Convex Function]
-Let $\mathcal{X} \subset \mathbb{R}^N$ be a convex set. Then $f: \mathcal{X}\rightarrow\mathbb{R}$ is a convex function if
+Let $\sX \subset \mathbb{R}^N$ be a convex set. Then $f: \sX\rightarrow\mathbb{R}$ is a convex function if
 $$ f\left( \alpha x + (1-\alpha)y \right) \leq \alpha f(x) + (1-\alpha) f(y) $$
 
 If f is differentiable then it is convex if
