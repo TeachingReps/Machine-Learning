@@ -1,0 +1,140 @@
+\documentclass[a4paper,english,12pt]{article}
+\input{header}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+%opening
+\title{Lecture-03 : Review of Linear Algebra and Convex Optimization}
+\author{}
+
+
+\begin{document}
+\maketitle
+\section{Review of Linear Algebra}
+\textbf{Reference :}\\
+ Appendix A- Foundations of Machine Learning by Mohri,Rostamizadeh and Talwalkar.
+\subsection{Definition : Vector Space}
+A vector space over $\mathbb{R}$ is a set equipped with following two operations, each satisfying four axioms.\\
+I. \textbf{Addition :} $\mathbb{V} \times \mathbb{V} \rightarrow \mathbb{V}$  \\
+For any two elements $ u \in \mathbb{V}$ and $v \in \mathbb{V}$ , $\exists$ a resultant element $s (s=u+v) \in \mathbb{V}$\\
+\textbf{Satisfying Axioms}:\\
+\tab1. Associativity of  addition : $u + (v + w) = (u + v) + w; \tab \forall u,v,w \in \mathbb{V}$\\
+\tab2. Commutativity of addition : $u + v = v + u; \tab \forall u,v \in \mathbb{V}$\\
+\tab3. Existence of Identity: There exists a zero vector ($0 \in \mathbb{V}$) s.t, $u+0=u; \forall u\in\mathbb{V}$\\
+\tab4. Existence of Inverse: For every $u \in \mathbb{V},\exists$ an element $-u\in\mathbb{V}$; s.t, $u+(-u)=0$\\
+II. \textbf{Scalar Multiplication}: $\mathbb{R}\times \mathbb{V}\rightarrow \mathbb{V}$\\
+For any scalar $\alpha\in\mathbb{R}$ and for any vector $v\in\mathbb{V}$,$\exists$ an element $m (m=\alpha v) \in \mathbb{V}$ \\
+\textbf{Satisfying Axioms}:\\ 
+\tab1. Compatibility with the field: $a(bu)=(ab)u; \forall a,b \in \mathbb{R}$ \& $u\in\mathbb{V}$\\
+\tab2. Existence of Identity : For multiplicative identity element $1 \in \mathbb{R}$, $1u=u; \forall u\in\mathbb{V}$\\
+\tab3. Distributivity over vector addition : $\alpha(vu)=\alpha u + \alpha v; \forall \alpha \in \mathbb{R}$ \& $u,v \in\mathbb{V}$ \\
+\tab4. Distributivity over field addition : $(\alpha+\beta)u=\alpha u + \beta u; \forall \alpha,\beta \in \mathbb{R}$ \& $u \in\mathbb{V}$ \\
+\textbf{Example of Vector Space}:\\
+V =  $\mathbb{R}$\\
+V =  $\mathbb{R}^N$\\
+V =  (c[a,b])\\
+\newpage
+\subsection{Definition : Inner Product Space}
+A Inner Product Space is a vector space equipped with an inner product denoted by $\langle.,.\rangle:V \times V \rightarrow \mathbb{R}$ that satisfying the following axioms\\
+\tab 1. Symmetry:\tab $\langle x,y\rangle = \langle y,x\rangle$\\
+\tab 2. Linearity:\tab $\langle\alpha x + \beta y, z\rangle = \alpha\langle x,z\rangle +\beta\langle y,z\rangle$\\
+\tab 3. Positive Definiteness:\tab $\langle x,x\rangle\geq 0$; $\langle x,x \rangle = 0$ iff $x=0$\\
+\textbf{Examples: Inner Product Space}\\
+\tab 1.  V =  $\mathbb{R}^N$;  $\langle x,y\rangle$ =$\langle\begin{bmatrix}x_{1} \\. \\ . \\ x_{N}\end{bmatrix}\begin{bmatrix}y_{1} \\. \\ . \\ y_{N}\end{bmatrix}^{T}\rangle$  = $x^{T}y = \displaystyle{\sum_{i}^{N}x_{i}y_{i}}$\\ \\
+\tab 2. V =  C($\mathbb{R}^N)$; $\langle f,g\rangle$  = $\displaystyle{\int_{\mathbb{R}^N}(f,g)(t)dt}$\\
+\tab 3. Space of Random Variables:   $\langle X,Y\rangle = \mathbb{E}(XY)$\\
+\subsection{Definition : Norms}
+Norm is a mapping $\norm .:V\rightarrow \mathbb{R_{+}}$ that satisfy the following axioms.\\
+\tab 1. Definitiveness: $\norm{X} = 0$ iff  $X=0$\\
+\tab 2. Homogenity: $\norm{\alpha X} = \abs{\alpha}\norm{X}$\\
+\tab 3. Triangle inequality: $\norm{X+Y}\leq\norm{X}+\norm{Y}$\\
+\textbf{Examples of Norms}:\\
+\tab 1.  V = $\mathbb{R};\tab\norm{X} = \abs{X}$\\
+\tab 2. V =  $\mathbb{R^N}; \tab  \norm{X}_p = \displaystyle{\Big(\sum_{i=1}^{N}\abs {X_{i}}^p\Big)^\frac{1}{p}}$\\
+\tab 3. V =  $\mathbb{R^N}; \tab  \norm{X}_2 = \displaystyle{\Big(\sum_{i=1}^{N}\abs {X_{i}}^2\Big)^\frac{1}{2}}$\\
+\subsection{Proposition : Holder's Inequality} 
+Let p,q $\geq 1$ be conjugate, i.e.  $\frac{1}{p} + \frac{1}{q} =1 $\\
+Then, \tab $\abs{\langle x,y\rangle} \leq \norm{x}_p \norm{y}_p$ ; $\forall x,y \in \mathbb{R^N}$\\
+\textbf{Proof} :\\
+$\log(\frac{1}{p}a^p + \frac{1}{q}b^p) \geq \frac{1}{p}\log(a^p) + \frac{1}{q}\log(b^p)$\tab(Concavity of Log )\\
+$\frac{1}{p}a^p + \frac{1}{q}b^p\geq ab$ \tab(Youngs inequality)\\
+
+Let, $a = \frac{\abs {x_{i}}}{\norm x_{p}}$ and $b = \frac{\abs y_{i}}{\norm y_{p}} $\\ 
+Hence,  \tab $\frac{1}{p} \frac{\abs x_{i}}{\norm x_{p}^p} + \frac{1}{q} \frac{\abs y_{i}}{\norm y_{p}^q} \geq \frac{\abs x_i\abs y_i}{\norm{x}_p\norm{y}_q}$\\
+Summing over $i\in[1,N]$,  we get\\
+$1 \geq \displaystyle{\sum_{i=1}^{N} \frac{\abs x_i\abs y_i}{\norm{x}_p\norm{y}_q}}  \geq \frac{\displaystyle{\sum_{i=1}^{N} \abs x_i\abs y_i}}{\norm{x}_p\norm{y}_q} \geq \frac{\abs{\langle x,y \rangle}}{\norm{x}_p\norm{y}_q}$ (Proved.)\\
+\textbf{Note:} Let, $f:\mathbb{R^N}\rightarrow\mathbb{R}$\\
+$f(y) = f(x) + \displaystyle{\sum_{i=1}^{N} \frac{\partial f}{\partial x_i}(y_i - x_j) + \frac{1}{2}\sum_{i=1}^{N} \frac{\partial^2 f}{\partial x_i \partial x_j}(y_i - x_i)(y_j - x_j)}$\\
+$\tab=f(x) + \displaystyle{\langle\begin{bmatrix} \frac{\partial f}{\partial x_1} \\. \\ . \\  \frac{\partial f}{\partial x_N}\end{bmatrix} \begin{bmatrix} {y_1 - x_1} \\. \\ . \\  {y_{N} - x_{N}}\end{bmatrix}\rangle} + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x)$\\
+\section{Review of Convex Optimization}
+\textbf{Reference :}\\
+Appendix B- Foundations of Machine Learning by Mohri,Rostamizadeh and Talwalkar.
+\subsection{Convex Function} 
+A function $f:\mathbb{R^N}\rightarrow\mathbb{R}$ is convex if it's dom$(f)$ is convex and Epi$(f)$ is convex where Epi$(f)$ is defined as follows \\
+Epi$(f) = \{(x,y) \in \mathbb{R}^N \times \mathbb{R}: y \geq f(x)\}$\\
+For a convex function $f(.)$ ; $f(\alpha x + \bar{\alpha y} ) \leq \alpha f(x) + \bar{\alpha} f(y)$ where $\alpha + \bar{\alpha} =1$ \\
+\\
+1. If $f$ is differentiable then $f$ is convex iff dom$(f)$ is convex and \\ $f(y) -f(x) \geq \langle\nabla f(x), y-x\rangle; \forall x,y \in$ dom($f$)\\
+\textbf{Proof} : $ f(y) - f(x) = \langle\nabla f(x) , y-x\rangle + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x) \geq \langle\nabla f(x) , y-x\rangle$\\
+2. If $f$ is twice differentiable then $f$ is convex iff dom$(f)$ is convex and it's Hessian is positive semi definite : $\nabla^2 f(x)\succeq 0; \forall x \in$ dom$(f)$\\
+\\\textbf{Examples of Convex Function}:\\
+1. Linear Function:  $f(x) = \langle w,x\rangle$; where $f:\mathbb{R^N}\rightarrow\mathbb{R}$\\
+2. Quadratic Function: $f(x) = x^TAx$; where A is positive semi definite \\
+3. Abs Maximum $f(x) = \max \abs X_{i \in N} = \norm{X}_\infty$\\
+\subsection{Lemma : Composition of Functions} 
+Let, $h(.):\mathbb{R}\rightarrow\mathbb{R};g(.):\mathbb{R}^N\rightarrow\mathbb{R}$ and $f:\mathbb{R}^N\rightarrow\mathbb{R}$ ; $\forall x \in \mathbb{R}^N$ where $f(x)$ is defined by $f(x) = h(g(x))$, then following inequalities are valid\\
+1. If h is a convex and non decreasing and g is convex,$\Longrightarrow f(.)$ is convex\\
+\textbf{Proof}:\tab As $g(.)$ is convex :  $g(\alpha x + \bar{\alpha}y )\leq \alpha g(x) + \bar{\alpha} g(y)$ \\
+\tab \tab Now, $h(g(\alpha x + \bar{\alpha}y ))\leq h(\alpha g(x) + \bar{\alpha} g(y))\leq \alpha h(g(x)) + \bar{\alpha} h(g(y))$\\
+Similarly,\\
+2. If h is a convex and non increasing and g is concave,$\Longrightarrow f(.)$ is convex\\
+3. If h is a concave and non decreasing and g is concave,$\Longrightarrow f(.)$ is concave\\
+4. If h is a concave and non increasing and g is convex,$\Longrightarrow f(.)$ is concave\\
+\subsection{Jensen's Inequality:} 
+Let $X\in C \subset \mathbb{R}^N$ be a r.v with finite mean and $f:C\rightarrow \mathbb{R}$ is convex,\\
+Then $\mathbb{E}[X] \in C$,   $\mathbb{E}[f(X)]\leq \infty$ and $f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]$\\
+\textbf{Proof}: \tab {$f(\displaystyle{\sum_{i=1}^{m}\alpha_{i}x_{i}}) \leq \sum_{_i=1}^{m}\alpha_{i}f(x_{i})$ \\where $\alpha_{i}$s could be interpreted as probabilities as $\alpha_{i}\geq0$ and $\displaystyle{\sum_{_i=1}^{m}\alpha_{i}}=1$
+	
+\subsection{Constrained Optimization}
+Let $f:\mathbb{R^N}\rightarrow\mathbb{R}$ and $g_{i}:\mathbb{R^N}\rightarrow\mathbb{R}, i \in [m]$ \\
+\textbf{Principle Problem:} $\min f(x)$ s.t. $g_{i}(x)\leq 0;\forall i \in [m]$\\
+Note: Let $p^*$ be the optimum value for the above problem.\\
+\\ \textbf{Definition : Lagrangian}\\
+If $x \in \mathbb{R}^N$ and $\alpha \in \mathbb{R_{+}}^M$, then Lagrangian $\mathscr{L}(x,\alpha):\mathbb{R}^N\times\mathbb{R_{+}}^M\rightarrow\mathbb{R}$ associated with the principal problem is defined as,   $\mathscr{L}(x,\alpha) = f(x) + \displaystyle{\sum_{i=1}^{m}\alpha_i g_i(x)}$;\\
+The variables $\alpha \in \mathbb{R_{+}}^M$ are called Lagrange or Dual Variables.
+\subsection{Dual Function:}
+$F:\mathbb{R^M_+}\rightarrow\mathbb{R}$ defined as $F(\alpha) = \inf\mathscr{L}(x,\alpha)$ where $x\in \mathbb{R^N}$\\
+\textbf{Remarks}:\\
+1. F is concave in $\alpha$\\
+2. $F(\alpha) \leq \mathscr{L}(x,\alpha)\leq f(x)$\\
+$\Longrightarrow F(\alpha)  \leq \adjustlimits \inf_{x\in \mathbb{R^N}} f(x) = p^*$\\
+$\Longrightarrow F(\alpha) \leq p^*$ such that $g_i(x) \leq 0$\\
+\subsection{Dual Problem:}
+Max $F(\alpha)$ such that $\alpha \in \mathbb{R_{+}}^M$; \tab Let $d^*$ be the optimal value of this dual problem.\\
+Remarks:\\
+1.Dual problem is always convex.\\
+2.$d^* \leq p^*$\\
+3.$(p^* - d^*)$ is called duality gap. When $d^* = p^*$, it is known as strong duality. It holds for convex optimization problems where constraints are qualifying.\\
+\subsection{Strong Constraint Qualification:}
+Assume that \textbf{int}$(\mathscr{X}) \neq \phi$, then the strong constraint qualification or \textbf{Slater's Condition} is defined as $\exists\bar{x} \in int(\mathscr{X})$, such that $g(\bar x) < 0$\\
+\subsection{Weak Constraint Qualification:}
+Assume that \textbf{int}$(\mathscr{X}) \neq \phi$, then the strong constraint qualification or \textbf{weak Slater's Condition} is defined as $\exists\bar{x} \in int(\mathscr{X}):\forall i \in [1,m],(g_i(\bar x) < 0)\vee(g_i(\bar x) = 0 \wedge g_i$ affine)\\
+\subsection{Saddle Point: Sufficient Condition:}
+Let P be a constrained optimum problem over $\mathscr{X} = \mathbb{R^N}$ If $(x^*,\alpha^*)$ is a saddle point of the associated Lagrangian, i.e. $\forall x\in \mathbb{R^N}, \forall\alpha\geq0,$
+$\mathscr{L}(x^*,\alpha)) \leq \mathscr{L}(x^*,\alpha^*)\leq \mathscr{L}(x,\alpha^*)$\\
+Then, $(x^*,\alpha^*)$ is a saddle point of P.\\
+\subsection{Saddle point-Necessary Condition}
+\begin{itemize}
+	
+	\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex functions and Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.\\
+	\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex differentiable functions and weak Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
+	
+\end{itemize}
+
+
+\subsection{Karush-Kuhn-Tucker's Theorem}
+Let $f,g_i : \mathscr{X}\rightarrow\mathbb{R},\forall i\in[1,m]$ are convex and differentiable function and that the constrains are qualified. Then $\bar{x}$ is a solution of the constrained problem iff\\ $\exists \bar{\alpha}\geq0$ s.t. \\
+1. $\nabla_x \mathscr{L}(\bar{x},\bar{\alpha}) = \nabla_xf(\bar{x}) + \langle\bar{\alpha},\nabla_x g(\bar{x})\rangle =0 $\\
+2. $\nabla_\alpha \mathscr{L}(\bar{x},\bar{\alpha}) = g(\bar{x}) \leq 0$\\
+3. $\langle\bar{\alpha},g(\bar{x})\rangle =0 $\\
+
+
+\end{document}
