@@ -12,63 +12,56 @@
 \section{Support Vector Machines}
 The margin is defined as,
 
-\begin{equation}
-\rho = \underset{(x,y) \in S} {\mathrm{inf}} \frac{|\langle w,x \rangle + b|}{||w||} = \frac{1}{||w||}.
-\end{equation}
+\EQ{
+\rho = \underset{(x,y) \in S} {\inf} \frac{|\langle w,x \rangle + b|}{\norm{w}} = \frac{1}{\norm{w}}.
+}
 
 The primal problem we need to solve then can be stated as, 
 
-\begin{align}
+\eq{
 &\text{min} ~~~\frac{1}{2} || w||^2\\
 &\text{s.t} ~~~ y_i ( \langle w,x \rangle + b) \geq 1 ~~~~, \forall i \in [m]
-\end{align}
+}
 
 There will be a unique solution to this optimization problem as it is a convex optimization problem with affine constraints.
 
 The Lagrangian for this problem can be written as,
 
-\begin{equation}
- \mathcal{L}(w,b, \alpha) = \frac{1}{2} || w||^2 +  \sum_{i = 1}^m \alpha_i (1 -  y_i ( \langle w,x \rangle + b)).
-\end{equation}
+\EQ{
+ \sL(w,b, \alpha) = \frac{1}{2} || w||^2 +  \sum_{i = 1}^m \alpha_i (1 -  y_i ( \langle w,x \rangle + b)).
+}
 
 Let $(w^*, b^*)$ be the solution to the primal problem. Then using KKT conditions we see that they obey the following equations,
 
 \begin{align*}
-\nabla_w \mathcal{L}(w^*, b^*, \alpha)~ &= ~ w^* -  \sum_{i =1} ^m \alpha_i~ y_i ~x_i ~=~ 0, \\
-\nabla_b \mathcal{L}(w^*, b^*, \alpha)~ & = ~ - \sum_{i= 1}^m ~ \alpha_i~ y_i =~ 0, \\
+\nabla_w \sL(w^*, b^*, \alpha)~ &= ~ w^* -  \sum_{i =1} ^m \alpha_i~ y_i ~x_i ~=~ 0, \\
+\nabla_b \sL(w^*, b^*, \alpha)~ & = ~ - \sum_{i= 1}^m ~ \alpha_i~ y_i =~ 0, \\
 \alpha_i(1- y_i(\langle w^*,x_i \rangle + b^* ))& = 0 , ~~~\forall i \in [m].
 \end{align*} 
 
 From the first condition we find,
 
-\begin{equation}
+\EQ{
 w^* =  \sum_{i =1} ^m \alpha_i~ y_i ~x_i.
-\end{equation}
+}
 
 We see from this expression that a sample contributes to $w^*$ only if the corresponding $\alpha_i$ is non zero. This motivates us to define support vectors.
 
 \begin{defn}[Support Vectors]
 Support vectors are defined as the feature vectors for which the corresponding $\alpha_i$ values are non zero.
-
-\begin{equation}
+\EQ{
 SV(S) = \{ x_i \in S ~:~ \alpha_i  \neq 0 \} =  \{ x_i \in S ~:~ y_i(\langle w^*,x_i \rangle + b^* ) =  1\}.
-\end{equation} 
-
+}
 \end{defn}
 
 From this we see that,
-
-\begin{equation}
+\EQ{
 w^* = \sum_{x_i \in SV(S)} \alpha_i~ y_i ~x_i.
-\end{equation}
-
-
-
+}
 
 \begin{rem}
 Support vectors fully define the maximum margin hyperplane.Vectors not lying in $SV(S)$ doesn't affect the definition of this hyperplane
 \end{rem}
-
 
 \begin{rem}
 $(w^*, b^*)$ is unique but $SV(S)$ need not be.
@@ -76,19 +69,19 @@ $(w^*, b^*)$ is unique but $SV(S)$ need not be.
 
 Now we derive the dual problem by evaluating the Lagrangian at $(w^*, b^*)$ using the KKT conditions.
 
-\begin{align}
-\mathcal{L}(w^*,b^*, \alpha) &= \frac{1}{2} || w^*||^2 +  \sum_{i = 1}^m \alpha_i (1 -  y_i ( \langle w^*,x \rangle + b^*)), \\
+\eq{
+\sL(w^*,b^*, \alpha) &= \frac{1}{2} || w^*||^2 +  \sum_{i = 1}^m \alpha_i (1 -  y_i ( \langle w^*,x \rangle + b^*)), \\
 &= \frac{1}{2} || \sum_{i =1} ^m \alpha_i~ y_i ~x_i||^2  ~- ~ \sum_{i = 1}^{m} \alpha_i y_i ( \sum_{j=1}^m\alpha_j y_j \langle x_j, x_i \rangle + b^*) +  \sum_{i =1}^{m} \alpha_i,\\
 &= \frac12 || \sum_{i =1}^m \alpha_i y_i x_i ||^2  -  \sum_{i,j =1}^m \alpha_i y_i \alpha_j y_j  \langle x_i, x_j \rangle - \sum_{i = 1}^m \alpha_i y_i b^*  + \sum_{i =1}^{m} \alpha_i,\\
 &=  -\frac12 || \sum_{i =1}^m \alpha_i y_i x_i || + \sum_{i = 1}^{m} \alpha_ i.
-\end{align}
+}
 
 The dual problem then becomes,
 
-\begin{align}
+\eq{
 \text{max} &~~~-\frac12 || \sum_{i =1}^m \alpha_i y_i x_i || + \sum_{i = 1}^{m} \alpha_ i \\
 \text{s.t}& ~~~\alpha_i \geq 0  ~~~ \text{and} ~~~  \sum_{i =1}^m \alpha_i y_i = 0, ~~~ \forall i \in [m].
-\end{align}
+}
 
 The function we are trying to optimize is concave. We can see this by finding its Hessian. Let,
 
@@ -106,32 +99,32 @@ The dual problem is a quadratic program which can be solved exactly to get the o
 
 \begin{note}
 $b^*$ can be found as well. We know that if $i \in SV(S)$ then $y_i(\langle w^*,x_i \rangle + b^* ) =  1$. Since $y_i^2 = 1$, we find that,
-\begin{equation}
+\EQ{
 b^* =  y_i - \langle w^*, x_i \rangle ~~~~\forall ~~ x_i \in SV(S).
-\end{equation}
+}
 \end{note}
 
 \begin{note}
 The hypothesis function can then be computed as,
 
-\begin{equation}
+\EQ{
 h(x) =  \text{sign}(\langle w^*, x \rangle +  b^*).
-\end{equation}
+}
 \end{note}
 
 \begin{note}
 
 From the KKT conditions,
 
-\begin{equation}
+\EQ{
 0 =  \sum_{i = 1}^m \alpha_i y_i b^* =  \sum_{i = 1}^m \alpha_i y_i^2  -  \sum_{i,j = 1}^ m \alpha_i \alpha_j y_i y_j \langle x_i, x_j \rangle.
-\end{equation}
+}
 
 The second term evaluates to $|| w||^2$ and $y_i^2 = 1$. This gives $ || w||^2 =  \sum_{i = 1}^m \alpha_i $. This gives an expression for the margin in terms of the dual variables,
 
-\begin{equation}
+\EQ{
 \rho =  \frac{1}{|| w|| ^2} =  \frac{1}{|| \alpha ||_1}.
-\end{equation} 
+} 
 \end{note}
 
 Now we will look at some results that show us why SVMs work well in practice.
@@ -139,76 +132,66 @@ Now we will look at some results that show us why SVMs work well in practice.
 \begin{defn}[Leave One Out error]
 Given a sample $S$ of size $m$ and a hypothesis $h_S$ the Leave One Out error is defined as,
 
-\begin{equation}
-\hat{R}_{LOO}(h_S) = \frac1m \sum_{i = 1}^m \mathbbm{1}_{\{h_{S \backslash \{x_i\}}(x_i) \neq y_i\}}
-\end{equation}
+\EQ{
+\hat{R}_{LOO}(h_S) = \frac1m \sum_{i = 1}^m \one_{\{h_{S \setminus \{x_i\}}(x_i) \neq y_i\}}
+}
 
 \end{defn}
 
 \begin{lem}
-
-\begin{equation}
-\mathbbm{E} \hat{R}_{LOO}(h_S) =  \mathop{\mathbb{E}}_{S ^\prime \sim D^{m-1}} R(h_{S^\prime}) .  
-\end{equation}
-
+\EQ{
+\E \hat{R}_{LOO}(h_S) =  {\E}_{S ^\prime \sim D^{m-1}} R(h_{S^\prime}) .  
+}
 \end{lem}
 
-{\bf Proof:}
-
-~
+\proof{
 Using the linearity of expectation,
 
-\begin{align}
-\mathbbm{E} \hat{R}_{LOO}(h_S) &= \frac1m \sum_{i = 1}^m  \mathbbm{E} \mathbbm{1}_{\{h_{S \backslash \{x_i\}}(x_i) \neq y_i\}},\\
-&=  \mathop{\mathbb{E}}_{S  \sim D^{m}} \mathbbm{1}_{\{h_{S \backslash \{x_i\}}(x_i) \neq y_i\}}, \\
-&=  \mathop{\mathbb{E}}_{S ^\prime \sim D^{m-1}} \mathop{\mathbb{E}}_{x_1 \sim D^{m}} \mathbbm{1}_{\{h_{S \backslash \{x_1\}}(x_1) \neq y_1\}},\\
-&= \mathop{\mathbb{E}}_{S ^\prime \sim D^{m-1}} R(h_{S^\prime}).
-\end{align}
-
-\begin{flushright}
-$\blacksquare$
-\end{flushright}
+\eq{
+\E \hat{R}_{LOO}(h_S) &= \frac1m \sum_{i = 1}^m  \E \one_{\{h_{S \setminus \{x_i\}}(x_i) \neq y_i\}},\\
+&=  {\E}_{S  \sim D^{m}} \one_{\{h_{S \setminus \{x_i\}}(x_i) \neq y_i\}}, \\
+&=  {\E}_{S ^\prime \sim D^{m-1}} {\E}_{x_1 \sim D^{m}} \one_{\{h_{S \setminus \{x_1\}}(x_1) \neq y_1\}},\\
+&= {\E}_{S ^\prime \sim D^{m-1}} R(h_{S^\prime}).
+}
+}
 
 
 \begin{thm}
 Let $|S| =  m+1$, then for an SVM,
-\begin{equation}
- \mathop{\mathbb{E}}_{S ^\prime \sim D^{m}} R(h_{S^\prime}) = \mathop{\mathbb{E}}_{S \sim D^{m + 1}} \frac{|SV(S)|}{m+1}
-\end{equation}
+\EQ{
+ {\E}_{S ^\prime \sim D^{m}} R(h_{S^\prime}) = {\E}_{S \sim D^{m + 1}} \frac{|SV(S)|}{m+1}
+}
 \end{thm}
 
-{\bf Proof:}
+\proof{
 We will show that $\hat{R}_{LOO}(SVM) \leq \frac{|SV(S)|}{m+1} $. Then by taking expectation on both sides we get the desired result by applying the previous lemma.
 
-\begin{equation}
-\hat{R}_{LOO}(SVM) = \frac{1}{m+1} \sum_{i = 1}^{m+1} \mathbbm{1}_{\{h_{S \backslash \{x_i\}}(x_i) \neq y_i\}}.
-\end{equation}
+\EQ{
+\hat{R}_{LOO}(SVM) = \frac{1}{m+1} \sum_{i = 1}^{m+1} \one_{\{h_{S \setminus \{x_i\}}(x_i) \neq y_i\}}.
+}
 
-If $i \not\in SV(S)$, then  $h_{S \backslash \{x_i\}} =  h _S$ and hence $ h_{S \backslash \{x_i\}}(x_i) = y_i$. Then taking the contrapositive we see that if  $h_{S \backslash \{x_i\}}(x_i) \neq y_i$ then $i \in SV(S)$. So,
+If $i \not\in SV(S)$, then  $h_{S \setminus \{x_i\}} =  h _S$ and hence $ h_{S \setminus \{x_i\}}(x_i) = y_i$. Then taking the contrapositive we see that if  $h_{S \setminus \{x_i\}}(x_i) \neq y_i$ then $i \in SV(S)$. So,
 
-\begin{equation}
-\sum_{i = 1}^{m+1} \mathbbm{1}_{\{h_{S \backslash \{x_i\}}(x_i) \neq y_i\}} \leq |SV(S)|. 
-\end{equation}
+\EQ{
+\sum_{i = 1}^{m+1} \one_{\{h_{S \setminus \{x_i\}}(x_i) \neq y_i\}} \leq |SV(S)|. 
+}
 
 This implies that,
 
-\begin{equation}
+\EQ{
 \hat{R}_{LOO}(SVM) = \frac{|SV(S)|}{m+1}. 
-\end{equation} 
-
-\begin{flushright}
-$\blacksquare$
-\end{flushright}
+} 
+}
 
 \section*{SVM: non-separable case}
 
-In the non-separable case it would not be possible to draw a hyperplane in $\mathbbm{R}^n$ that perfectly separates the two sets of points. More precisely,
+In the non-separable case it would not be possible to draw a hyperplane in $\R^n$ that perfectly separates the two sets of points. More precisely,
 
-\begin{equation}
+\EQ{
 \forall_{w,b}~~\exists_{i \in [m]} ~~y_i( \langle w, x_i \rangle + b) \leq 1
-\end{equation}
+}
 
-To minimize the number of such points we can try to find a hyperplane that  minimizes the empirical error, $$ \mathop{\min}_{w,b} ~~\sum_{i =1}^{m} \mathbbm{1}_{\{ y_i( \langle w, x_i \rangle + b) \leq 1 \}}. $$
+To minimize the number of such points we can try to find a hyperplane that  minimizes the empirical error, $$ {\min}_{w,b} ~~\sum_{i =1}^{m} \one_{\{ y_i( \langle w, x_i \rangle + b) \leq 1 \}}. $$
 
 But this optimization problem is NP-hard in the dimension of the space and cannot be solved efficiently. Moreover we would like to work with a smooth function to optimize.
 
@@ -224,11 +207,11 @@ We have conflicting objectives here. For one we need to minimize the total slack
 
 We should also maximize the margin for non-outliers. These two are conflicting objectives. We define a primal problem by deciding on a trade-off between these two. The primal problem is,
 
-\begin{align}
-\text{min} ~~& \frac12 ||w||^2 ~~+ ~~c \sum_{i \in O} \xi_i^p \\
+\eq{
+\text{min} ~~& \frac12 \norm{w}^2 ~~+ ~~c \sum_{i \in O} \xi_i^p \\
 ~~& \text{s.t} ~~  y_i( \langle w, x_i \rangle + b) \geq   1 - \xi_i ~~,~~ i \in [m] \\
 ~~~~~&~~~ \xi_i \geq 0
-\end{align}  
+}  
 
 
 The constant $c$ fixes the trade-off between the two objectives. The best value of $c$ for a given dataset can be found using cross validation.
@@ -238,9 +221,9 @@ The constant $c$ fixes the trade-off between the two objectives. The best value 
 
 Even if the data is non-separable it maybe possible to make it linearly separable by taking it a higher dimensional space (eg: space of polynomials). This lets us use non linear separators which use non-linear decision boundaries. But we saw that the primary operation we need to construct SVMs are inner-products. So instead of working in a higher dimensional space we stick to the original space and compute the inner products using a kernel function. Kernels will usually be symmetric and positive definite.
 
-More precisely let $\Phi : \sX \rightarrow \mathscr{H}$ be the mapping that takes our feature vectors to a higher dimensional space  $\mathscr{H}$. The kernel is then defined by the inner product in this space,
+More precisely let $\Phi : \sX \to \sH$ be the mapping that takes our feature vectors to a higher dimensional space  $\sH$. The kernel is then defined by the inner product in this space,
 
-$$K(x, x^\prime) = \langle \Phi(x), \Phi(x^\prime) \rangle_{\mathscr{H}} $$
+$$K(x, x^\prime) = \langle \Phi(x), \Phi(x^\prime) \rangle_{\sH} $$
 
 So the kernel lets us compute inner-products in a higher dimensional space.
 
