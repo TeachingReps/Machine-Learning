@@ -1,0 +1,194 @@
+\documentclass[a4paper,english,12pt]{article}
+\input{../header}
+%\newcommand\item[1][1cm]{\hspace*{#1}}
+%opening
+\title{Lecture-03 : Review of Linear Algebra and Convex Optimization}
+\author{Amritendu}
+
+
+\begin{document}
+\maketitle
+\section{Review of Linear Algebra}
+\subsection{Vector Space}
+A vector space over the field $\R$ is a set $V$ equipped with following two operations, each satisfying four axioms. 
+\subsubsection{Vector addition}
+Vector addition is a mapping $+: V \times V \to V$ defined by $+(v,w) = v+w$ for any two elements $v,w \in V$, 
+that satisfies the following four axioms. 
+\begin{enumerate}
+\item Associativity of  addition : $u + (v + w) = (u + v) + w; $ for all $ u,v,w \in V$
+\item Commutativity of addition : $u + v = v + u;  $ for all $ u,v \in V$
+\item Existence of Identity: There exists a zero vector ($0 \in V$) s.t, $u+0=u; $ for all $ u\in V$
+\item Existence of Inverse: For every $u \in V,$ there exists an element $-u\in V$; s.t, $u+(-u)=0$\
+\end{enumerate}
+\subsubsection{Scalar Multiplication}
+Scalar multiplication is a mapping $\cdot : \R \times V \to V$ defined by $\cdot(\alpha, v) = \alpha v \in V$, 
+that satisfies the following four axioms. 
+\begin{enumerate}
+\item Compatibility with the field: $a(bu)=(ab)u; $ for all $ a,b \in \R$ and $u\in V$
+\item Existence of Identity : For multiplicative identity element $1 \in \R$, $1u=u; $ for all $ u\in V$
+\item Distributivity over vector addition : $\alpha(vu)=\alpha u + \alpha v; $ for all $ \alpha \in \R$ and $u,v \in V$ 
+\item Distributivity over field addition : $(\alpha+\beta)u=\alpha u + \beta u; $ for all $ \alpha,\beta \in \R$ and $u \in V$ 
+\end{enumerate}
+
+\begin{exmp}[Vector space] 
+Following are some common examples of vector spaces.  
+\begin{enumerate}
+\item Space of all real numbers $\R$. 
+\item Euclidean space of $N$-dimensions, denoted by $\R^N$.
+\item Space of continuous functions over a compact subset $[a,b]$ denoted by $C([a,b])$. 
+\end{enumerate}
+\end{exmp}
+
+\subsection{Inner Product Space}
+A \textit{inner product space} is a vector space equipped with an inner product denoted by $\langle \cdot , \cdot \rangle:V \times V \to \R$ that satisfies the following axioms. 
+\begin{enumerate}
+\item  \textbf{Symmetry:} $\langle x,y\rangle = \langle y,x\rangle$
+\item  \textbf{Linearity:} $\langle\alpha x + \beta y, z\rangle = \alpha\langle x,z\rangle +\beta\langle y,z\rangle$
+\item  \textbf{Definiteness:} $\langle x,x\rangle\geq 0$; $\langle x,x \rangle = 0$ iff $x=0$
+\end{enumerate}
+\begin{exmp}[inner product spaces] 
+Following are some common examples of inner product spaces. 
+\begin{enumerate}
+\item  For the vector space $V =  \R^N$, 
+we can define  the inner product between two $N$-dimensional vectors as 
+\EQ{
+\langle x,y\rangle =\langle\begin{bmatrix}x_{1} , \dots, x_{N}\end{bmatrix}^T, \begin{bmatrix}y_{1} , \dots, y_{N}\end{bmatrix}^{T}\rangle.
+ = x^{T}y = \sum_{i}^{N}x_{i}y_{i}. 
+}
+\item For vector space $V = C(\R^N)$, 
+we can define the inner product of two continuous functions over $\R^N$ as 
+\EQ{
+\langle f,g\rangle  = \int_{\R^N}(f,g)(t)dt.
+}
+\item For the vector space of random variables, 
+we can define the inner product of two random variables as 
+\EQ{
+\langle X,Y\rangle = \E(XY). 
+}
+\end{enumerate}
+\end{exmp}
+
+\subsection{Norms}
+Norm is a mapping $\norm{\cdot}:V \to \R_+$ that satisfy the following axioms. 
+\begin{enumerate}
+\item \textbf{Definiteness:} $\norm{v} = 0$ iff  $v=0$
+\item  \textbf{Homogeneity:} $\norm{\alpha v} = \abs{\alpha}\norm{v}$
+\item  \textbf{Triangle inequality:} $\norm{v+w}\leq\norm{v}+\norm{w}$
+\end{enumerate}
+\begin{exmp}[Norms] 
+Following are examples of commonly defined norms on some example vector spaces. 
+\begin{enumerate}
+\item $V = \R;\norm{X} = \abs{X}$
+\item $V = \R^N;  \norm{X}_p = \Big(\sum_{i=1}^{N}\abs {X_{i}}^p\Big)^\frac{1}{p}$
+\item $V = \R^N; \norm{X}_2 = \Big(\sum_{i=1}^{N}\abs {X_{i}}^2\Big)^\frac{1}{2}$
+\end{enumerate}
+\end{exmp}
+
+\begin{prop}[Holder's Inequality]
+Let p,q $\geq 1$ be conjugate, i.e.  $\frac{1}{p} + \frac{1}{q} =1 $
+Then, 
+\EQ{
+\abs{\langle x,y\rangle} \leq \norm{x}_p \norm{y}_p \text{  for all } x,y \in \R^N.
+} 
+\end{prop}
+\proof{
+For any positive $a, b \in \R$ and conjugate pair $p,q \ge 1$ such that $1/p + 1/q = 1$, 
+we have from the concavity of log
+\EQ{
+\ln\left(\frac{1}{p}a^p + \frac{1}{q}b^p\right) \geq \frac{1}{p}\ln a^p + \frac{1}{q}\ln b^p = \ln ab.
+}
+Since $\ln(\cdot)$ is an increasing function, the above inequality implies the Young's inequality $\frac{1}{p}a^p + \frac{1}{q}b^p\geq ab$. 
+
+The Holder's inequality is trivially true if $x = 0$ or $y = 0$. 
+Hence, we assume that $\norm{x}\norm{y} > 0$, and let $a = \frac{\abs {x_{i}}}{\norm x_{p}}$ and $b = \frac{\abs y_{i}}{\norm y_{p}}$. 
+From Young's inequality, we have  
+\EQ{
+\frac{\abs x_{i}}{p\norm x_{p}^p} + \frac{\abs y_{i}}{q\norm y_{q}^q} \ge \frac{\abs x_i\abs y_i}{\norm{x}_p\norm{y}_q}, \text{  for all } i \in [N]. 
+} 
+Since $\abs{\langle x,y \rangle} \le \sum_{i=1}^N\abs{x_i}\abs{y_i}$, we get the result by summing both sides over $i \in [N]$ in the above inequality. 
+% we get
+%\EQ{
+%1 \geq \sum_{i=1}^{N} \frac{\abs x_i\abs y_i}{\norm{x}_p\norm{y}_q}  \ge \frac{\displaystyle{\sum_{i=1}^{N} \abs x_i\abs y_i}}{\norm{x}_p\norm{y}_q} \geq \frac{\abs{\langle x,y \rangle}}{\norm{x}_p\norm{y}_q}.
+%}
+
+\section{Review of Convex Optimization}
+Let, $f:\R^N\to\R$
+$f(y) = f(x) + \displaystyle{\sum_{i=1}^{N} \frac{\partial f}{\partial x_i}(y_i - x_j) + \frac{1}{2}\sum_{i=1}^{N} \frac{\partial^2 f}{\partial x_i \partial x_j}(y_i - x_i)(y_j - x_j)}$
+$=f(x) + \displaystyle{\langle\begin{bmatrix} \frac{\partial f}{\partial x_1} .  .   \frac{\partial f}{\partial x_N}\end{bmatrix} \begin{bmatrix} {y_1 - x_1} .  .   {y_{N} - x_{N}}\end{bmatrix}\rangle} + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x)$. 
+
+\subsection{Convex Function} 
+A function $f:\R^N\to\R$ is convex if it's dom$(f)$ is convex and Epi$(f)$ is convex where Epi$(f)$ is defined as follows 
+Epi$(f) = \{(x,y) \in \R^N \times \R: y \geq f(x)\}$
+For a convex function $f(.)$ ; $f(\alpha x + \bar{\alpha y} ) \leq \alpha f(x) + \bar{\alpha} f(y)$ where $\alpha + \bar{\alpha} =1$ 
+
+If $f$ is differentiable then $f$ is convex iff dom$(f)$ is convex and  $f(y) -f(x) \geq \langle\nabla f(x), y-x\rangle; $ for all $ x,y \in$ dom($f$)
+\textbf{Proof} : $ f(y) - f(x) = \langle\nabla f(x) , y-x\rangle + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x) \geq \langle\nabla f(x) , y-x\rangle$
+If $f$ is twice differentiable then $f$ is convex iff dom$(f)$ is convex and it's Hessian is positive semi definite : $\nabla^2 f(x)\succeq 0; $ for all $ x \in$ dom$(f)$
+\textbf{Examples of Convex Function}:
+Linear Function:  $f(x) = \langle w,x\rangle$; where $f:\R^N\to\R$
+Quadratic Function: $f(x) = x^TAx$; where A is positive semi definite 
+Abs Maximum $f(x) = \max \abs X_{i \in N} = \norm{X}_\infty$
+\subsection{Lemma : Composition of Functions} 
+Let, $h(.):\R\to\R;g(.):\R^N\to\R$ and $f:\R^N\to\R$ ;  for all $ x \in \R^N$ where $f(x)$ is defined by $f(x) = h(g(x))$, then following inequalities are valid
+If h is a convex and non decreasing and g is convex,$\Longrightarrow f(.)$ is convex
+\textbf{Proof}:As $g(.)$ is convex :  $g(\alpha x + \bar{\alpha}y )\leq \alpha g(x) + \bar{\alpha} g(y)$ 
+
+Now, $h(g(\alpha x + \bar{\alpha}y ))\leq h(\alpha g(x) + \bar{\alpha} g(y))\leq \alpha h(g(x)) + \bar{\alpha} h(g(y))$
+Similarly,
+If h is a convex and non increasing and g is concave,$\Longrightarrow f(.)$ is convex
+If h is a concave and non decreasing and g is concave,$\Longrightarrow f(.)$ is concave
+If h is a concave and non increasing and g is convex,$\Longrightarrow f(.)$ is concave
+
+\subsection{Jensen's Inequality:} 
+Let $X\in C \subset \R^N$ be a r.v with finite mean and $f:C\to \R$ is convex,
+Then $\E[X] \in C$,   $\E[f(X)]\leq \infty$ and $f(\E[X]) \leq \E[f(X)]$
+\textbf{Proof}: {$f(\displaystyle{\sum_{i=1}^{m}\alpha_{i}x_{i}}) \leq \sum_{_i=1}^{m}\alpha_{i}f(x_{i})$ where $\alpha_{i}$s could be interpreted as probabilities as $\alpha_{i}\geq0$ and $\displaystyle{\sum_{_i=1}^{m}\alpha_{i}}=1$
+	
+\subsection{Constrained Optimization}
+Let $f:\R^N\to\R$ and $g_{i}:\R^N\to\R, i \in [m]$ 
+\textbf{Principle Problem:} $\min f(x)$ s.t. $g_{i}(x)\leq 0;$ for all $ i \in [m]$
+Note: Let $p^*$ be the optimum value for the above problem.
+ \textbf{Definition : Lagrangian}
+If $x \in \R^N$ and $\alpha \in \R_+^M$, then Lagrangian $\sL(x,\alpha):\R^N\times\R_+^M\to\R$ associated with the principal problem is defined as,   $\sL(x,\alpha) = f(x) + \displaystyle{\sum_{i=1}^{m}\alpha_i g_i(x)}$;
+The variables $\alpha \in \R_+^M$ are called Lagrange or Dual Variables.
+\subsection{Dual Function:}
+$F:\mathbb{R^M_+}\to\R$ defined as $F(\alpha) = \inf\sL(x,\alpha)$ where $x\in \R^N$
+\begin{rem}
+\begin{enumerate}
+\item F is concave in $\alpha$
+\item $F(\alpha) \leq \sL(x,\alpha)\leq f(x)$
+\item $F(\alpha)  \leq \adjustlimits \inf_{x\in \R^N} f(x) = p^*$
+\item $F(\alpha) \leq p^*$ such that $g_i(x) \leq 0$
+\end{enumerate}
+\end{rem}
+\subsection{Dual Problem:}
+Max $F(\alpha)$ such that $\alpha \in \R_+^M$; Let $d^*$ be the optimal value of this dual problem.
+Remarks:
+1.Dual problem is always convex.
+2.$d^* \leq p^*$
+3.$(p^* - d^*)$ is called duality gap. When $d^* = p^*$, it is known as strong duality. It holds for convex optimization problems where constraints are qualifying. 
+
+\subsection{Strong Constraint Qualification:}
+Assume that \textbf{int}$(\sX) \neq \phi$, then the strong constraint qualification or \textbf{Slater's Condition} is defined as, 
+there exists $\bar{x} \in int(\sX)$, such that $g(\bar x) < 0$
+\subsection{Weak Constraint Qualification:}
+Assume that \textbf{int}$(\sX) \neq \phi$, then the strong constraint qualification or \textbf{weak Slater's Condition} is defined as there exists $\bar{x} \in int(\sX):$ for all $ i \in [1,m],(g_i(\bar x) < 0)\vee(g_i(\bar x) = 0 \wedge g_i$ affine)
+\subsection{Saddle Point: Sufficient Condition:}
+Let P be a constrained optimum problem over $\sX = \R^N$ If $(x^*,\alpha^*)$ is a saddle point of the associated Lagrangian, i.e. for all $ x\in \R^N, $ for all $\alpha\geq0,$
+$\sL(x^*,\alpha)) \leq \sL(x^*,\alpha^*)\leq \sL(x,\alpha^*)$
+Then, $(x^*,\alpha^*)$ is a saddle point of P.
+\subsection{Saddle point-Necessary Condition}
+\begin{itemize}
+\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex functions and Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
+\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex differentiable functions and weak Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
+\end{itemize}
+
+
+\subsection{Karush-Kuhn-Tucker's Theorem}
+Let $f,g_i : \sX\to\R,$ for all $ i\in[1,m]$ are convex and differentiable function and that the constrains are qualified. Then $\bar{x}$ is a solution of the constrained problem iff there exists $ \bar{\alpha}\geq0$ s.t. 
+$\nabla_x \sL(\bar{x},\bar{\alpha}) = \nabla_xf(\bar{x}) + \langle\bar{\alpha},\nabla_x g(\bar{x})\rangle =0 $
+$\nabla_\alpha \sL(\bar{x},\bar{\alpha}) = g(\bar{x}) \leq 0$
+$\langle\bar{\alpha},g(\bar{x})\rangle =0 $
+
+
+\end{document}
