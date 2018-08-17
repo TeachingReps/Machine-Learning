@@ -113,83 +113,140 @@ Since $\abs{\langle x,y \rangle} \le \sum_{i=1}^N\abs{x_i}\abs{y_i}$, we get the
 %}
 
 \section{Review of Convex Optimization}
-Let, $f:\R^N\to\R$
-$f(y) = f(x) + \displaystyle{\sum_{i=1}^{N} \frac{\partial f}{\partial x_i}(y_i - x_j) + \frac{1}{2}\sum_{i=1}^{N} \frac{\partial^2 f}{\partial x_i \partial x_j}(y_i - x_i)(y_j - x_j)}$
-$=f(x) + \displaystyle{\langle\begin{bmatrix} \frac{\partial f}{\partial x_1} .  .   \frac{\partial f}{\partial x_N}\end{bmatrix} \begin{bmatrix} {y_1 - x_1} .  .   {y_{N} - x_{N}}\end{bmatrix}\rangle} + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x)$. 
-
-\subsection{Convex Function} 
+\begin{note}
+	Let, $f:\mathbb{R^N}\rightarrow\mathbb{R}$\\
+	Now, $f(y) = f(x) + \displaystyle{\sum_{i=1}^{N} \frac{\partial f}{\partial x_i}(y_i - x_j) + \frac{1}{2}\sum_{i=1}^{N} \frac{\partial^2 f}{\partial x_i \partial x_j}(y_i - x_i)(y_j - x_j)}$\\
+	$\Longrightarrow f(y)=f(x) + \displaystyle{\langle\begin{bmatrix} \frac{\partial f}{\partial x_1} \\. \\ . \\  \frac{\partial f}{\partial x_N}\end{bmatrix} \begin{bmatrix} {y_1 - x_1} \\. \\ . \\  {y_{N} - x_{N}}\end{bmatrix}\rangle} + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x)$
+\end{note}
+\subsection{Convex Function}
+\begin{defn}
 A function $f:\R^N\to\R$ is convex if it's dom$(f)$ is convex and Epi$(f)$ is convex where Epi$(f)$ is defined as follows 
 Epi$(f) = \{(x,y) \in \R^N \times \R: y \geq f(x)\}$
-For a convex function $f(.)$ ; $f(\alpha x + \bar{\alpha y} ) \leq \alpha f(x) + \bar{\alpha} f(y)$ where $\alpha + \bar{\alpha} =1$ 
+\end{defn}
+\begin{note}
+	For a convex function $f(.)$ ; $f(\alpha x + \bar{\alpha y} ) \leq \alpha f(x) + \bar{\alpha} f(y)$ where $\alpha + \bar{\alpha} =1$.\\	
+	\begin{itemize}
+		\item If $f$ is differentiable then $f$ is convex iff 
+		\begin{enumerate}
+			\item dom$(f)$ is convex
+			\item $f(y) -f(x) \geq \langle\nabla f(x), y-x\rangle; $ for all $ x,y \in$ dom($f$)
+		\end{enumerate}	 
+		\textbf{Proof} : $ f(y) - f(x) = \langle\nabla f(x) , y-x\rangle + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x) \geq \langle\nabla f(x) , y-x\rangle$.
+		\item If $f$ is twice differentiable then $f$ is convex iff dom$(f)$ is convex and it's Hessian is positive semi definite : $\nabla^2 f(x)\succeq 0; $ for all $ x \in$ dom$(f)$
+	\end{itemize}
+	
+\end{note}
 
-If $f$ is differentiable then $f$ is convex iff dom$(f)$ is convex and  $f(y) -f(x) \geq \langle\nabla f(x), y-x\rangle; $ for all $ x,y \in$ dom($f$)
-\textbf{Proof} : $ f(y) - f(x) = \langle\nabla f(x) , y-x\rangle + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x) \geq \langle\nabla f(x) , y-x\rangle$
-If $f$ is twice differentiable then $f$ is convex iff dom$(f)$ is convex and it's Hessian is positive semi definite : $\nabla^2 f(x)\succeq 0; $ for all $ x \in$ dom$(f)$
-\textbf{Examples of Convex Function}:
-Linear Function:  $f(x) = \langle w,x\rangle$; where $f:\R^N\to\R$
-Quadratic Function: $f(x) = x^TAx$; where A is positive semi definite 
-Abs Maximum $f(x) = \max \abs X_{i \in N} = \norm{X}_\infty$
-\subsection{Lemma : Composition of Functions} 
-Let, $h(.):\R\to\R;g(.):\R^N\to\R$ and $f:\R^N\to\R$ ;  for all $ x \in \R^N$ where $f(x)$ is defined by $f(x) = h(g(x))$, then following inequalities are valid
-If h is a convex and non decreasing and g is convex,$\Longrightarrow f(.)$ is convex
-\textbf{Proof}:As $g(.)$ is convex :  $g(\alpha x + \bar{\alpha}y )\leq \alpha g(x) + \bar{\alpha} g(y)$ 
+\begin{exmp}{Convex Function}
+	\begin{enumerate}
+		\item Linear Function:  $f(x) = \langle w,x\rangle$; where $f:\R^N\to\R$
+		\item Quadratic Function: $f(x) = x^TAx$; where A is positive semi definite 
+		\item Abs Maximum $f(x) = \max \abs X_{i \in N} = \norm{X}_\infty$		
+	\end{enumerate}
 
-Now, $h(g(\alpha x + \bar{\alpha}y ))\leq h(\alpha g(x) + \bar{\alpha} g(y))\leq \alpha h(g(x)) + \bar{\alpha} h(g(y))$
-Similarly,
-If h is a convex and non increasing and g is concave,$\Longrightarrow f(.)$ is convex
-If h is a concave and non decreasing and g is concave,$\Longrightarrow f(.)$ is concave
-If h is a concave and non increasing and g is convex,$\Longrightarrow f(.)$ is concave
+\end{exmp}
 
-\subsection{Jensen's Inequality:} 
-Let $X\in C \subset \R^N$ be a r.v with finite mean and $f:C\to \R$ is convex,
-Then $\E[X] \in C$,   $\E[f(X)]\leq \infty$ and $f(\E[X]) \leq \E[f(X)]$
-\textbf{Proof}: {$f(\displaystyle{\sum_{i=1}^{m}\alpha_{i}x_{i}}) \leq \sum_{_i=1}^{m}\alpha_{i}f(x_{i})$ where $\alpha_{i}$s could be interpreted as probabilities as $\alpha_{i}\geq0$ and $\displaystyle{\sum_{_i=1}^{m}\alpha_{i}}=1$
+\begin{lem}{Composition of Functions}
+	\\Let, $h(.):\R\to\R;g(.):\R^N\to\R$ and $f:\R^N\to\R$ ;  for all $ x \in \R^N$ where $f(x)$ is defined by $f(x) = h(g(x))$, then following inequalities are valid
+	\begin{enumerate}
+		\item If h is a convex and non decreasing and g is convex,$\Longrightarrow f(.)$ is convex\\
+		\textbf{Proof}: As $g(.)$ is convex :  $g(\alpha x + \bar{\alpha}y )\leq \alpha g(x) + \bar{\alpha} g(y)$\\		
+		Now, $h(g(\alpha x + \bar{\alpha}y ))\leq h(\alpha g(x) + \bar{\alpha} g(y))\leq \alpha h(g(x)) + \bar{\alpha} h(g(y))$(Proved.)
+		\item If h is a convex and non increasing and g is concave,$\Longrightarrow f(.)$ is convex
+		\item If h is a concave and non decreasing and g is concave,$\Longrightarrow f(.)$ is concave
+		\item If h is a concave and non increasing and g is convex,$\Longrightarrow f(.)$ is concave
+	\end{enumerate}
+	
+\end{lem}
+\begin{thm}{\textbf{Jensen's Inequality}}
+\\Let $X\in C \subset \R^N$ be a r.v with finite mean and $f:C\to \R$ is convex,\\
+Then $\E[X] \in C$,   $\E[f(X)]\leq \infty$ and $f(\E[X]) \leq \E[f(X)]$	
+\end{thm}
+
+\begin{flushleft}
+	\textbf{Proof}: $f(\displaystyle{\sum_{i=1}^{m}\alpha_{i}x_{i}}) \leq \sum_{_i=1}^{m}\alpha_{i}f(x_{i})$; where $\alpha_{i}$s could be interpreted as probabilities as $\alpha_{i}\geq0$ and $\displaystyle{\sum_{_i=1}^{m}\alpha_{i}}=1$
+\end{flushleft}
 	
 \subsection{Constrained Optimization}
-Let $f:\R^N\to\R$ and $g_{i}:\R^N\to\R, i \in [m]$ 
-\textbf{Principle Problem:} $\min f(x)$ s.t. $g_{i}(x)\leq 0;$ for all $ i \in [m]$
-Note: Let $p^*$ be the optimum value for the above problem.
- \textbf{Definition : Lagrangian}
-If $x \in \R^N$ and $\alpha \in \R_+^M$, then Lagrangian $\sL(x,\alpha):\R^N\times\R_+^M\to\R$ associated with the principal problem is defined as,   $\sL(x,\alpha) = f(x) + \displaystyle{\sum_{i=1}^{m}\alpha_i g_i(x)}$;
-The variables $\alpha \in \R_+^M$ are called Lagrange or Dual Variables.
-\subsection{Dual Function:}
-$F:\mathbb{R^M_+}\to\R$ defined as $F(\alpha) = \inf\sL(x,\alpha)$ where $x\in \R^N$
-\begin{rem}
-\begin{enumerate}
-\item F is concave in $\alpha$
-\item $F(\alpha) \leq \sL(x,\alpha)\leq f(x)$
-\item $F(\alpha)  \leq \adjustlimits \inf_{x\in \R^N} f(x) = p^*$
-\item $F(\alpha) \leq p^*$ such that $g_i(x) \leq 0$
-\end{enumerate}
-\end{rem}
-\subsection{Dual Problem:}
-Max $F(\alpha)$ such that $\alpha \in \R_+^M$; Let $d^*$ be the optimal value of this dual problem.
-Remarks:
-1.Dual problem is always convex.
-2.$d^* \leq p^*$
-3.$(p^* - d^*)$ is called duality gap. When $d^* = p^*$, it is known as strong duality. It holds for convex optimization problems where constraints are qualifying. 
+Let $f:\R^N\to\R$ and $g_{i}:\R^N\to\R, i \in [m]$ \\
+\textbf{Principle Optimization Problem:} $\min f(x)$ s.t. $g_{i}(x)\leq 0;$ for all $ i \in [m]$
+\begin{note}
+	Let $p^*$ be the optimum value for the above problem.
+\end{note}
 
-\subsection{Strong Constraint Qualification:}
-Assume that \textbf{int}$(\sX) \neq \phi$, then the strong constraint qualification or \textbf{Slater's Condition} is defined as, 
-there exists $\bar{x} \in int(\sX)$, such that $g(\bar x) < 0$
-\subsection{Weak Constraint Qualification:}
-Assume that \textbf{int}$(\sX) \neq \phi$, then the strong constraint qualification or \textbf{weak Slater's Condition} is defined as there exists $\bar{x} \in int(\sX):$ for all $ i \in [1,m],(g_i(\bar x) < 0)\vee(g_i(\bar x) = 0 \wedge g_i$ affine)
-\subsection{Saddle Point: Sufficient Condition:}
+\begin{defn}{\textbf{Lagrangian}}\\
+	If $x \in \R^N$ and $\alpha \in \R_+^M$, then Lagrangian $\sL(x,\alpha):\R^N\times\R_+^M\to\R$ associated with the principal problem is defined as,   $\sL(x,\alpha) = f(x) + \displaystyle{\sum_{i=1}^{m}\alpha_i g_i(x)}$;
+	The variables $\alpha \in \R_+^M$ are called Lagrange or Dual Variables.
+\end{defn}
+
+\begin{defn}{\textbf{Dual Function}}
+\begin{flushleft}
+	Dual function associated with the Principal Optimization Problem is defined as $F:\R_+^M\to\R$ defined as $F(\alpha) = \inf\sL(x,\alpha)$ where $x\in \R^N$
+\end{flushleft}	
+\end{defn}
+
+\begin{rem}{Important Properties of Dual Function}\\
+
+	\begin{enumerate}
+		\item $F$ is concave in $\alpha$
+		\item $F(\alpha) \leq \sL(x,\alpha)\leq f(x)$
+		\item $F(\alpha)  \leq \adjustlimits \inf_{x\in \R^N} f(x) = p^*$
+		\item $F(\alpha) \leq p^*$ such that $g_i(x) \leq 0$
+	\end{enumerate}
+	
+
+\end{rem}
+\subsubsection{Dual Problem:}
+Dual Problem associated with Principal Optimization Problem is as follows \\
+Max $F(\alpha)$ ; such that $\alpha \in \R_+^M$
+\begin{note}
+	Let $d^*$ be the optimal value of this dual problem.
+\end{note}
+
+\begin{rem}{Dual Function}
+	\begin{enumerate}
+		\item Dual problem is always convex.
+		\item $d^* \leq p^*$
+		\item $(p^* - d^*)$ is called duality gap. When $d^* = p^*$, it is known as strong duality. It holds for convex optimization problems where constraints are qualifying. 
+	\end{enumerate}
+	
+\end{rem}
+
+\begin{defn}{\textbf{Strong Constraint Qualification:}}\\
+	Assume that \textbf{int}$(\sX) \neq \phi$, then the strong constraint qualification or \textbf{Slater's Condition} is defined as, 
+	there exists $\bar{x} \in int(\sX)$, such that $g(\bar x) < 0$
+\end{defn}
+
+\begin{defn}{\textbf{Weak Constraint Qualification:}}
+	Assume that \textbf{int}$(\sX) \neq \phi$, then the strong constraint qualification or \textbf{weak Slater's Condition} is defined as there exists $\bar{x} \in int(\sX):$ for all $ i \in [1,m],(g_i(\bar x) < 0)\vee(g_i(\bar x) = 0 \wedge g_i$ affine)
+\end{defn}
+
+
+
+\begin{thm}{Saddle Point: Sufficient Condition}\\
 Let P be a constrained optimum problem over $\sX = \R^N$ If $(x^*,\alpha^*)$ is a saddle point of the associated Lagrangian, i.e. for all $ x\in \R^N, $ for all $\alpha\geq0,$
 $\sL(x^*,\alpha)) \leq \sL(x^*,\alpha^*)\leq \sL(x,\alpha^*)$
 Then, $(x^*,\alpha^*)$ is a saddle point of P.
-\subsection{Saddle point-Necessary Condition}
-\begin{itemize}
-\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex functions and Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
-\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex differentiable functions and weak Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
-\end{itemize}
+\end{thm}
+
+\begin{thm}{Saddle point-Necessary Condition}
+	\begin{itemize}
+		\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex functions and Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
+		\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex differentiable functions and weak Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
+	\end{itemize}
+\end{thm}
+\newpage
+\begin{thm}{Karush-Kuhn-Tucker's Theorem}\\
+	Let $f,g_i : \sX\to\R,$ for all $ i\in[1,m]$ are convex and differentiable function and that the constrains are qualified. Then $\bar{x}$ is a solution of the constrained problem iff there exists $ \bar{\alpha}\geq0$ s.t.
+	\begin{itemize}
+	\item $\nabla_x \sL(\bar{x},\bar{\alpha}) = \nabla_xf(\bar{x}) + \langle\bar{\alpha},\nabla_x g(\bar{x})\rangle =0 $
+	\item $\nabla_\alpha \sL(\bar{x},\bar{\alpha}) = g(\bar{x}) \leq 0$
+	\item $\langle\bar{\alpha},g(\bar{x})\rangle =0 $
+	\end{itemize} 
+
+\end{thm}
 
 
-\subsection{Karush-Kuhn-Tucker's Theorem}
-Let $f,g_i : \sX\to\R,$ for all $ i\in[1,m]$ are convex and differentiable function and that the constrains are qualified. Then $\bar{x}$ is a solution of the constrained problem iff there exists $ \bar{\alpha}\geq0$ s.t. 
-$\nabla_x \sL(\bar{x},\bar{\alpha}) = \nabla_xf(\bar{x}) + \langle\bar{\alpha},\nabla_x g(\bar{x})\rangle =0 $
-$\nabla_\alpha \sL(\bar{x},\bar{\alpha}) = g(\bar{x}) \leq 0$
-$\langle\bar{\alpha},g(\bar{x})\rangle =0 $
 
 
 \end{document}
