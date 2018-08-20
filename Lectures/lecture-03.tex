@@ -1,7 +1,5 @@
 \documentclass[a4paper,english,12pt]{article}
 \input{../header}
-%\newcommand\item[1][1cm]{\hspace*{#1}}
-%opening
 \title{Lecture-03 : Review of Linear Algebra and Convex Optimization}
 \date{Aug 09, 2018}
 \author{Amritendu}
@@ -113,18 +111,33 @@ Since $\abs{\langle x,y \rangle} \le \sum_{i=1}^N\abs{x_i}\abs{y_i}$, we get the
 %}
 
 \section{Review of Convex Optimization}
-\begin{note}
-	Let, $f:\mathbb{R^N}\rightarrow\mathbb{R}$\\
-	Now, $f(y) = f(x) + \displaystyle{\sum_{i=1}^{N} \frac{\partial f}{\partial x_i}(y_i - x_j) + \frac{1}{2}\sum_{i=1}^{N} \frac{\partial^2 f}{\partial x_i \partial x_j}(y_i - x_i)(y_j - x_j)}$\\
-	$\Longrightarrow f(y)=f(x) + \displaystyle{\langle\begin{bmatrix} \frac{\partial f}{\partial x_1} \\. \\ . \\  \frac{\partial f}{\partial x_N}\end{bmatrix} \begin{bmatrix} {y_1 - x_1} \\. \\ . \\  {y_{N} - x_{N}}\end{bmatrix}\rangle} + \frac{1}{2}(y-x)^T \nabla^2 f(x) (y-x)$
-\end{note}
+
+Let $f:\R^N\to\R$ be a function over $N$-dimensional reals. 
+Then, we can write its Taylor series expansion around the neighborhood of $x \in \R^N$ as  
+\EQ{
+f(y) = f(x) + \sum_{i=1}^{N} \frac{\partial f}{\partial x_i}(y_i - x_j) + \frac{1}{2}\sum_{i=1}^{N}\sum_{j=1}^N\frac{\partial^2 f}{\partial x_i \partial x_j}(y_i - x_i)(y_j - x_j) + o (\norm{y-x}^2_2).
+}
+%&= f(x) + \left\langle\begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \vdots \\  \frac{\partial f}{\partial x_N}\end{bmatrix}, \begin{bmatrix} {y_1 - x_1} \\ \vdots \\  y_{N} - x_{N}\end{bmatrix}\right\rangle 
+%+   \begin{bmatrix} y_1 - x_1,& \hdots, & y_{N} - x_{N}\end{bmatrix}\begin{bmatrix}\frac{\partial^2 f}{\partial x_1\partial x_1} & \hdots & \frac{\partial^2 f}{\partial x_1\partial x_N}\\ \vdots & \ddots & \vdots \\  \frac{\partial^2 f}{\partial x_N\partial x_1}& \hdots & \frac{\partial^2 f}{\partial x_N\partial x_N}\end{bmatrix}\begin{bmatrix} y_1 - x_1 \\ \vdots \\  y_{N} - x_{N}\end{bmatrix}.
+%}
+We can define the gradient vector $\nabla f = \begin{bmatrix}\frac{\partial f}{\partial x_1} & \hdots, & \frac{\partial f}{\partial x_N}\end{bmatrix}^T$, 
+and the Hessian $\nabla^2f \in \R^{N \times N}$ such that $ [\nabla^2f]_{ij}= \frac{\partial^2 f}{\partial x_i\partial x_j}$, to observe 
+\EQ{
+f(y) = f(x) + \nabla f^T(y-x) + (y-x)^T\nabla^2f(y-x) + o(\norm{y-x}^2_2).
+}
+	
 \subsection{Convex Function}
+Let $\sX \subseteq \R^N$. 
+For a function $f: \sX \to \R$, we define its epigraph as 
+\EQ{
+Epi(f) \triangleq \{(x,y) \in \R^N \times \R: y \ge f(x)\}.
+}
+
 \begin{defn}
-A function $f:\R^N\to\R$ is convex if it's dom$(f)$ is convex and Epi$(f)$ is convex where Epi$(f)$ is defined as follows 
-Epi$(f) = \{(x,y) \in \R^N \times \R: y \geq f(x)\}$
+A function $f:\R^N\to\R$ is convex if it's dom$(f)$ is convex and $Epi(f)$ is convex. 
 \end{defn}
 \begin{note}
-	For a convex function $f(.)$ ; $f(\alpha x + \bar{\alpha y} ) \leq \alpha f(x) + \bar{\alpha} f(y)$ where $\alpha + \bar{\alpha} =1$.\\	
+For a convex function $f(\cdot)$ ; $f(\alpha x + \bar{\alpha y} ) \leq \alpha f(x) + \bar{\alpha} f(y)$ where $\alpha + \bar{\alpha} =1$.\\	
 	\begin{itemize}
 		\item If $f$ is differentiable then $f$ is convex iff 
 		\begin{enumerate}
@@ -235,7 +248,6 @@ Then, $(x^*,\alpha^*)$ is a saddle point of P.
 		\item Assume that $f$ and $g_i$, $i\in [1,m]$ are  convex differentiable functions and weak Slater's condition holds, then if x is a solution of the constrained optimization problem, then there exists $\alpha\geq 0$ s.t $(x,\alpha)$ is a saddle point of the Lagrangian.
 	\end{itemize}
 \end{thm}
-\newpage
 \begin{thm}{Karush-Kuhn-Tucker's Theorem}\\
 	Let $f,g_i : \sX\to\R,$ for all $ i\in[1,m]$ are convex and differentiable function and that the constrains are qualified. Then $\bar{x}$ is a solution of the constrained problem iff there exists $ \bar{\alpha}\geq0$ s.t.
 	\begin{itemize}
