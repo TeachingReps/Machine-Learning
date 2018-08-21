@@ -1,7 +1,5 @@
 \documentclass[a4paper,english,12pt]{article}
 \input{../header}
-\usepackage{graphicx}
-\graphicspath{ {./figures/} }
 
 %opening
 \title{Lecture-05: Kernel Methods}
@@ -85,8 +83,7 @@ $\mathbf{K}$ is called the Gram matrix or the kernel matrix associated to a kern
 \end{rem}
 \end{defn}
 
-\begin{exmp}
-	\textbf{Polynomial kernel}
+\begin{exmp}[Polynomial kernel]
 	
 For $c>0$ and degree $d \in \N$,
 \[K(x,x') = (\langle x, x' \rangle + c)^d ~~~ \text{for} ~~~ x,x' \in \sX \subseteq \R^N\]
@@ -120,7 +117,7 @@ c
 Consider the following classification problem shown in Figure 1, where the red and the blue points must be separated by a hyperplane. This is not possible in the space $x_1 \times x_2$ since no separable hyperplane exists. 
 
 \begin{figure}[h]
-	\includegraphics[scale=0.5]{kernel-methods-polynomial-kernel}
+	\includegraphics[scale=0.5]{Figures/kernel-methods-polynomial-kernel}
 	\centering
 	\caption{Left: Four points from two classes plotted on the $x_1, x_2$ axes. These points are not separable by any hyperplane. Right: The same four points are plotted on the $\sqrt{2} x_1 x_2$ and $\sqrt{2c} x_1$ axes. These points are now separable.}
 \end{figure}
