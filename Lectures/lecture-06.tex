@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+	\sffamily
+	\title{Lecture 6}
+	\maketitle
+	\textbf{\\RKHS Theorem Proof:}
+	\\	
+	$$\Phi(x) = \chi \rightarrow \rm I\!R$$
+	$$x'\rightarrow K(x,x')$$
+	$$i.e.~\Phi_x(x')=K(x,x')$$
+	$H=\bar{H_o}$
+	\\\\
+	\textbf{Properties of the $<.,.>$ :}
+	\begin{itemize}
+		\item \textbf{Symmetric:} By the definition of PDS.
+		\item By PSD, $<f,f>~\geq 0$
+		\item \textbf{Definiteness:} $<f,\Phi_x>^2~\leq~<f,f><\Phi_x,\Phi_x>$
+		\item \textbf{Bilinear:} $<af+bg,ch+dk>~=~ac<f,h>+ad<f,k>+bc<g,h>+bd<g,k>$ 
+	\end{itemize}
+    .\\
+    \textbf{Reproducing:}
+    $$f~\epsilon~H_o~:~f=\sum_{i\epsilon I}a_i\Phi_{x_i}$$
+    \textbf{Verify:} $f(x)=<f(.),K(x,.)>$
+    \\\\
+    LHS: $$f(x)=\sum_{i\epsilon I}a_i\Phi_{x_i}(x)=\sum_{i\epsilon I}a_i K(x_i,x)$$
+    RHS: $$<\sum_{i\epsilon I}a_i\Phi_{x_i},\Phi_x>=\sum_{i\epsilon I}a_iK(x_i,x)$$
+    \\
+    \textbf{Normalization of PDS Kernels:}
+    $$K':\chi \times \chi \rightarrow \rm I\!R~~~~PDS~Kernel$$
+    $$K:\chi \times \chi \rightarrow \rm I\!R$$
+    \[
+      K(x,x')=
+              \begin{cases}
+               0 \text{ if } K(x,x')=0 \text{ or } K'(x,x)=0 \\
+               \frac{K'(x,x')}{\sqrt{K'(x,x)\sqrt{K'(x',x')}}}
+              \end{cases}
+    \]
+    \textbf{Remarks :}
+    $$K(x,x)=1~~\forall~x~\epsilon~\chi~~~\{K(x,x)=0\}$$
+    \textbf{H.W.}$$~~K'(x,x')=exp(\frac{<x,x'>}{\sigma^2})$$
+    $$\text{Then show that, }K(x,x')=exp(\frac{-||x-x'||^2}{2\sigma^2})$$
+    \\
+    \textbf{Lemma: Normalized PDS Kernels:}\\
+    "Let $K'$ be PDS kernel, then the normalized kernel $K$ is also PDS."\\
+    \textbf{Proof:}
+    $$\text{Without loss of generality, we can assume }K'(x_i,x_i)~\geq~0~~~~\forall~i~\epsilon~[m]$$
+    $$\sum_{i,j=1}^{m}c_ic_jK(x_i,x_j)=\sum c_ic_j\frac{K'(x_i,x_j)}{\sqrt{K'(x_i,x_i)}\sqrt{K'(x_j,x_j)}}$$
+    $$\implies\sum c_ic_jK'(x_i,x_j)~\geq~0~\text{ Since K' is PDS, Here is proved, Lets look some other forms.}$$
+    $$\implies\sum c_ic_j\frac{<\Phi_{x_i},\Phi_{x_j}>}{||\Phi_{x_i}||.||\Phi_{x_j}||}$$
+    $$\implies\sum c_ic_j<\frac{\Phi_{x_i}}{||\Phi_{x_i}||},\frac{\Phi_{x_j}}{||\Phi_{x_j}||}> \text{ which is, }$$
+    $$||\sum_{i=1}^{m}\frac{\Phi_{x_i}}{||\Phi_{x_i}||}||^2~\geq~0$$
+    \\
+    $\rightarrow$ Advantages of working with kernel is that no explicit definition of $\Phi$ is needed.\\\\
+    $\rightarrow$ \textbf{Advantages of working with explicit $\Phi$ are}:
+    \begin{itemize}
+    	\item For primal method in various optimization problems.
+    	\item To derive an approximation based on $\Phi$
+    	\item Theoretical analysis where $\Phi$ is more convenient.
+    \end{itemize}
+\end{document}
