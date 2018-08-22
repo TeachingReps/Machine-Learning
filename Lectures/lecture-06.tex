@@ -1,34 +1,37 @@
-\documentclass{article}
-\usepackage{amsmath}
+\documentclass[a4paper,english,12pt]{article}
+\input{../header}
+
+\title{Lecture-06: Kernel Methods}
+\date{Aug 21, 2018}
+\author{Mrugsen}
+
 \begin{document}
-	\sffamily
-	\title{Lecture 6}
-	\maketitle
-	\textbf{\\RKHS Theorem Proof:}
-	\\	
-	$$\Phi(x) = \chi \rightarrow \rm I\!R$$
-	$$x'\rightarrow K(x,x')$$
+\maketitle
+\section{RKHS Theorem Proof:}
+
+	$$\Phi(x) = \sX \to \R$$
+	$$x'\to K(x,x')$$
 	$$i.e.~\Phi_x(x')=K(x,x')$$
-	$H=\bar{H_o}$
+	$\H=\bar{\H}_0$
 	\\\\
-	\textbf{Properties of the $<.,.>$ :}
+	\textbf{Properties of the $\inner{\cdot}{\cdot}$ :}
 	\begin{itemize}
 		\item \textbf{Symmetric:} By the definition of PDS.
-		\item By PSD, $<f,f>~\geq 0$
-		\item \textbf{Definiteness:} $<f,\Phi_x>^2~\leq~<f,f><\Phi_x,\Phi_x>$
-		\item \textbf{Bilinear:} $<af+bg,ch+dk>~=~ac<f,h>+ad<f,k>+bc<g,h>+bd<g,k>$ 
+		\item By PSD, $\inner{f}{f}~\geq 0$
+		\item \textbf{Definiteness:} $\inner{f}{\Phi_x}^2~\leq~\inner{f}{f}\inner{\Phi_x}{\Phi_x}$
+		\item \textbf{Bilinear:} $\inner{af+bg}{ch+dk}~=~ac\inner{f}{h}+ad\inner{f,k}+bc\inner{g}{h}+bd\inner{g}{k}$ 
 	\end{itemize}
     .\\
     \textbf{Reproducing:}
-    $$f~\epsilon~H_o~:~f=\sum_{i\epsilon I}a_i\Phi_{x_i}$$
-    \textbf{Verify:} $f(x)=<f(.),K(x,.)>$
+    $$f\in\H_0~:~f=\sum_{i \in I}a_i\Phi_{x_i}$$
+    \textbf{Verify:} $f(x)=\inner{f(\cdot)}{K(x,\cdot)}$
     \\\\
-    LHS: $$f(x)=\sum_{i\epsilon I}a_i\Phi_{x_i}(x)=\sum_{i\epsilon I}a_i K(x_i,x)$$
-    RHS: $$<\sum_{i\epsilon I}a_i\Phi_{x_i},\Phi_x>=\sum_{i\epsilon I}a_iK(x_i,x)$$
+    LHS: $$f(x)=\sum_{i \in I}a_i\Phi_{x_i}(x)=\sum_{i \in I}a_i K(x_i,x)$$
+    RHS: $$\inner{\sum_{i \in I}a_i\Phi_{x_i}}{\Phi_x}=\sum_{i \in I}a_iK(x_i,x)$$
     \\
     \textbf{Normalization of PDS Kernels:}
-    $$K':\chi \times \chi \rightarrow \rm I\!R~~~~PDS~Kernel$$
-    $$K:\chi \times \chi \rightarrow \rm I\!R$$
+    $$K':\sX \times \sX \to \R~~~~PDS~Kernel$$
+    $$K:\sX \times \sX \to \R$$
     \[
       K(x,x')=
               \begin{cases}
@@ -37,22 +40,22 @@
               \end{cases}
     \]
     \textbf{Remarks :}
-    $$K(x,x)=1~~\forall~x~\epsilon~\chi~~~\{K(x,x)=0\}$$
-    \textbf{H.W.}$$~~K'(x,x')=exp(\frac{<x,x'>}{\sigma^2})$$
-    $$\text{Then show that, }K(x,x')=exp(\frac{-||x-x'||^2}{2\sigma^2})$$
+    $$K(x,x)=1~~\forall~x\in\sX~~~\{K(x,x)=0\}$$
+    \textbf{H.W.}$$~~K'(x,x')=\exp(\frac{\inner{x}{x'}}{\sigma^2})$$
+    $$\text{Then show that, }K(x,x')=\exp(\frac{-\norm{x-x'}^2}{2\sigma^2})$$
     \\
     \textbf{Lemma: Normalized PDS Kernels:}\\
     "Let $K'$ be PDS kernel, then the normalized kernel $K$ is also PDS."\\
     \textbf{Proof:}
-    $$\text{Without loss of generality, we can assume }K'(x_i,x_i)~\geq~0~~~~\forall~i~\epsilon~[m]$$
+    $$\text{Without loss of generality, we can assume }K'(x_i,x_i)~\geq~0~~~~\forall~i\in[m]$$
     $$\sum_{i,j=1}^{m}c_ic_jK(x_i,x_j)=\sum c_ic_j\frac{K'(x_i,x_j)}{\sqrt{K'(x_i,x_i)}\sqrt{K'(x_j,x_j)}}$$
     $$\implies\sum c_ic_jK'(x_i,x_j)~\geq~0~\text{ Since K' is PDS, Here is proved, Lets look some other forms.}$$
-    $$\implies\sum c_ic_j\frac{<\Phi_{x_i},\Phi_{x_j}>}{||\Phi_{x_i}||.||\Phi_{x_j}||}$$
-    $$\implies\sum c_ic_j<\frac{\Phi_{x_i}}{||\Phi_{x_i}||},\frac{\Phi_{x_j}}{||\Phi_{x_j}||}> \text{ which is, }$$
-    $$||\sum_{i=1}^{m}\frac{\Phi_{x_i}}{||\Phi_{x_i}||}||^2~\geq~0$$
+    $$\implies\sum c_ic_j\frac{\inner{\Phi_{x_i}}{\Phi_{x_j}}}{\norm{\Phi_{x_i}}\norm{\Phi_{x_j}}}$$
+    $$\implies\sum c_ic_j\inner{\frac{\Phi_{x_i}}{\norm{\Phi_{x_i}}}}{\frac{\Phi_{x_j}}{\norm{\Phi_{x_j}}}} \text{ which is, }$$
+    $$\norm{\sum_{i=1}^{m}\frac{\Phi_{x_i}}{\norm{\Phi_{x_i}}}}^2~\geq~0$$
     \\
-    $\rightarrow$ Advantages of working with kernel is that no explicit definition of $\Phi$ is needed.\\\\
-    $\rightarrow$ \textbf{Advantages of working with explicit $\Phi$ are}:
+    $\to$ Advantages of working with kernel is that no explicit definition of $\Phi$ is needed.\\\\
+    $\to$ \textbf{Advantages of working with explicit $\Phi$ are}:
     \begin{itemize}
     	\item For primal method in various optimization problems.
     	\item To derive an approximation based on $\Phi$
