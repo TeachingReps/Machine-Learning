@@ -18,7 +18,7 @@ In the previous lecture, we proved a general sample complexity result under two 
 Specifically, under the above assumptions, we proved that any consistent algorithm is a PAC-learning algorithm. Also, with \textit{confidence} and \textit{accuracy} parameters denoted as $\delta$ and $\epsilon$ respectively, the following bound on the sample size $m$ holds: $$m\geq \frac{1}{\epsilon}\big(\log |\sH|+\log \frac{1}{\delta}\big).$$ 
 We begin by applying the above result to analyze PAC learning of  a specific concept class.
 \begin{exmp}[Conjunction of Boolean Literals]
-Fix  any positive integer $n$. Let $x_i\in\{0,1\}$, for $i\in[n]$. A Boolean literal is either a variable $x_i$ or its negation $\bar{x}_i$. Consider the concept class $\cC_n$ of conjunction of at most $n$ Boolean literals. That is, $$\cC_n=\Big\{\big(\underset{i\in F}\wedge x_i\big)\wedge \big(\underset{i\in G}\wedge \bar{x}_i\big):F\cap G=\emptyset,~F\cup G \subseteq [n]\Big\}.$$ For $n=6$, a specific training set (with positive examples and negative examples labelled) is given below. 
+Fix  any positive integer $n$. Let $x_i\in\{0,1\}$, for $i\in[n]$. A Boolean literal is either a variable $x_i$ or its negation $\bar{x}_i$. Consider the concept class $\sC_n$ of conjunction of at most $n$ Boolean literals. That is, $$\sC_n=\Big\{\big(\underset{i\in F}\wedge x_i\big)\wedge \big(\underset{i\in G}\wedge \bar{x}_i\big):F\cap G=\emptyset,~F\cup G \subseteq [n]\Big\}.$$ For $n=6$, a specific training set (with positive examples and negative examples labelled) is given below. 
 \begin{center}
 \begin{table}[h!]
 \centering
@@ -45,8 +45,8 @@ Fix  any positive integer $n$. Let $x_i\in\{0,1\}$, for $i\in[n]$. A Boolean lit
 \label{Table_Boolean_Lit}
 \end{table}
 \end{center}
-In the light of the above example, we can consider the following algorithm for obtaining a consistent hypothesis. Let $ \hat{F}(x_1,x_2,\hdots,x_n)\equiv \hat{F}$ denote the output of the algorithm corresponding to set $F$ in the definition of $\cC_n$. Similarly, define $\hat{G}$. Also, let $x_i=(x_{i1},x_{i2},\hdots,x_{im})$, for $i\in[n]$. Then, a consistent algorithm is obtained as follows: $$\hat{F}^c:=\bigcap_{i=1}^{m}\big\{j\in[n]: x_{ij}=0\big\},$$ $$\hat{G}^c:=\bigcap_{i=1}^{m}\big\{j\in[n]: x_{ij}=1\big\}.$$
- Note that, in any conjunction, a literal could either be inserted positively ($x_i$), with negation ($\bar{x}_i$) or not inserted at all. Thus, the size of the concept class (and hence,  the hypothesis set) is $|\cC_n|=3^n$. Since we have a consistent algorithm with finite hypothesis set, we can make use of the above mentioned result on sample complexity. For the example discussed in Table \ref{Table_Boolean_Lit}, if $\delta=\epsilon=0.01$, the sample complexity bound is $m\geq 1120$.
+In the light of the above example, we can consider the following algorithm for obtaining a consistent hypothesis. Let $ \hat{F}(x_1,x_2,\hdots,x_n)\equiv \hat{F}$ denote the output of the algorithm corresponding to set $F$ in the definition of $\sC_n$. Similarly, define $\hat{G}$. Also, let $x_i=(x_{i1},x_{i2},\hdots,x_{im})$, for $i\in[n]$. Then, a consistent algorithm is obtained as follows: $$\hat{F}^c:=\bigcap_{i=1}^{m}\big\{j\in[n]: x_{ij}=0\big\},$$ $$\hat{G}^c:=\bigcap_{i=1}^{m}\big\{j\in[n]: x_{ij}=1\big\}.$$
+ Note that, in any conjunction, a literal could either be inserted positively ($x_i$), with negation ($\bar{x}_i$) or not inserted at all. Thus, the size of the concept class (and hence,  the hypothesis set) is $|\sC_n|=3^n$. Since we have a consistent algorithm with finite hypothesis set, we can make use of the above mentioned result on sample complexity. For the example discussed in Table \ref{Table_Boolean_Lit}, if $\delta=\epsilon=0.01$, the sample complexity bound is $m\geq 1120$.
 \end{exmp}
 
 \section{Generalization Bound-Single Hypothesis}
