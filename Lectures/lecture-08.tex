@@ -1,0 +1,202 @@
+\documentclass[a4paper,english,12pt]{article}
+\input{../header}
+
+%opening
+\title{Lecture-08: Guarantees: Finite Hypothesis Sets, Inconsistent Case \& Generalities}
+\date{August 28, 2018}
+\author{Deekshith P K}
+
+
+\begin{document}
+\maketitle
+\section{Introduction}
+In the previous lecture, we proved a general sample complexity result under two assumptions: 
+\begin{enumerate}
+\item The hypothesis set $\sH$ has finite cardinality (i.e., $|\sH|<\infty$).
+\item The concept to be learned is in $\sH$ (i.e., output of the algorithm is \textit{consistent}).
+\end{enumerate}
+Specifically, under the above assumptions, we proved that any consistent algorithm is a PAC-learning algorithm. Also, with \textit{confidence} and \textit{accuracy} parameters denoted as $\delta$ and $\epsilon$ respectively, the following bound on the sample size $m$ holds: $$m\geq \frac{1}{\epsilon}\big(\log |\sH|+\log \frac{1}{\delta}\big).$$ 
+We begin by applying the above result to analyze PAC learning of  a specific concept class.
+\begin{exmp}[Conjunction of Boolean Literals]
+Fix  any positive integer $n$. Let $x_i\in\{0,1\}$, for $i\in[n]$. A Boolean literal is either a variable $x_i$ or its negation $\bar{x}_i$. Consider the concept class $\cC_n$ of conjunction of at most $n$ Boolean literals. That is, $$\cC_n=\Big\{\big(\underset{i\in F}\wedge x_i\big)\wedge \big(\underset{i\in G}\wedge \bar{x}_i\big):F\cap G=\emptyset,~F\cup G \subseteq [n]\Big\}.$$ For $n=6$, a specific training set (with positive examples and negative examples labelled) is given below. 
+\begin{center}
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |c|c|c|c|c|c|c| } 
+ \hline
+ $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & Label \\
+ \hline
+ \hline
+ 0 & 1 & 1 & 0 & 1 & 1 & + \\ 
+  \hline 
+ 0 & 1 & 1 & 1 & 1 & 1 & +\\ 
+  \hline 
+ 0 & 0 & 1 & 1 & 0 & 1 & -\\ 
+  \hline 
+ 1 & 0 & 0 & 1 & 1 & 0 & -\\ 
+  \hline 
+ 0 & 1 & 0 & 0 & 1 & 1 & +\\
+ \hline
+ \hline
+  0 & 1 & ? & ? & 1 & 1 & A consistent hypothesis: $\bar{x}_1\wedge x_2\wedge x_5 \wedge x_6$ \\ 
+ \hline
+\end{tabular}
+\caption{A training set for $n=6$. For each example with positive label, $x_i$ is opted out as a candidate literal  if the $i^{th}$ location has 0. Similarly, if it is 1, $\bar{x}_i$ is opted out. This strategy yields a consistent hypothesis.}
+\label{Table_Boolean_Lit}
+\end{table}
+\end{center}
+In the light of the above example, we can consider the following algorithm for obtaining a consistent hypothesis. Let $ \hat{F}(x_1,x_2,\hdots,x_n)\equiv \hat{F}$ denote the output of the algorithm corresponding to set $F$ in the definition of $\cC_n$. Similarly, define $\hat{G}$. Also, let $x_i=(x_{i1},x_{i2},\hdots,x_{im})$, for $i\in[n]$. Then, a consistent algorithm is obtained as follows: $$\hat{F}^c:=\bigcap_{i=1}^{m}\big\{j\in[n]: x_{ij}=0\big\},$$ $$\hat{G}^c:=\bigcap_{i=1}^{m}\big\{j\in[n]: x_{ij}=1\big\}.$$
+ Note that, in any conjunction, a literal could either be inserted positively ($x_i$), with negation ($\bar{x}_i$) or not inserted at all. Thus, the size of the concept class (and hence,  the hypothesis set) is $|\cC_n|=3^n$. Since we have a consistent algorithm with finite hypothesis set, we can make use of the above mentioned result on sample complexity. For the example discussed in Table \ref{Table_Boolean_Lit}, if $\delta=\epsilon=0.01$, the sample complexity bound is $m\geq 1120$.
+\end{exmp}
+
+\section{Generalization Bound-Single Hypothesis}
+First, we will prove certain results which will turn out to be handy in deriving the required bounds. Let $\mathbb{R}$, $\mathbb{R}_+$ denote the real line and positive real line respectively. 
+
+\begin{lem}[Markov's Inequality]
+Let $\Phi:\mathbb{R} \mapsto \mathbb{R}_+$ be a non negative function and let $X$ be a real valued random variable. Then, for all $\lambda>0$, $$\mathbb{P}\big[\Phi(X)\geq \lambda\big]\leq \frac{\mathbb{E}\big[\Phi(X)\big]]}{\lambda}.$$ 
+\label{Lem_Markov}
+\end{lem}
+\begin{proof}
+Consider the following indicator function 
+\begin{equation}
+f(x)=
+\begin{cases}
+
+       1, &\text{if }~\Phi(x)\geq \lambda,\\
+       0, &\quad\text{if}~\Phi(x)< \lambda. \\
+\end{cases}
+\end{equation}
+Observe that, for all $x\in\mathbb{R}$, $f(x)\leq \frac{\Phi(x)}{\lambda}.$ The result follows by taking expectation on both sides of the inequality and noting that $\mathbb{E}[f(X)]=\mathbb{P}\big[\Phi(X)\geq \lambda\big]$. 
+\end{proof}
+\begin{rem}
+From Lemma \ref{Lem_Markov}, we recover the following important special cases: 
+\begin{enumerate}
+\item With $\Phi(x)=|x|$, we obtain the standard form of Markov's inequality:   $$\mathbb{P}\big[|X|\geq \lambda\big]\leq \frac{\mathbb{E}[|X|]}{\lambda}.$$ 
+\item With $\Phi(x)=x^2$, we obtain Chebyshev's inequality:$$\mathbb{P}\big[|X| \geq \lambda\big]\leq \frac{\mathbb{E}[X^2]}{\lambda^2}.$$ 
+\item With $\Phi(x)=e^{tx}$, $t>0$, we obtain $$\mathbb{P}[X\geq \lambda]\leq \frac{\mathbb{E}\big[e^{tX}\big]}{e^{t\lambda }}.$$ 
+\end{enumerate}
+
+\end{rem}
+\begin{thm}[Hoeffding's Lemma]
+Let $X$ be a random variable with $\mathbb{E}[X]=0$, $X\in[a,b]$ with $b>a$. Then, for any $t>0$, the following holds: $$\mathbb{E}\big[e^{tX}\big]\leq e^{\frac{t^2(b-a)}{8}}.$$
+\label{Th_Hoeffding}
+\end{thm}
+\begin{proof}
+For $x\in[a,b]$, let $p=\frac{x-a}{b-a}$. Thus, $1-p=\frac{b-x}{b-a}$. Note that $pa+(1-p)b=x$. From the convexity of $e^{tx},~x\in[a,b]$, $$e^{tx}=e^{pta+(1-p)tb}\leq pe^{ta}+(1-p)e^{tb}=\frac{x-a}{b-a}e^{ta}+\frac{b-x}{b-a}e^{tb}.$$ Using the fact that $\mathbb{E}[X]=0$, we obtain $$\mathbb{E}\big[e^{tX}\big]\leq \frac{be^{ta}-ae^{tb}}{b-a}:=e^{\phi(t)}.$$
+If we denote $q=\frac{-a}{b-a}$ (since $\mathbb{E}[X]=0$, $a<0$), $\phi(t)=at+\log [q e^{(b-a)t}+(1-q)]$. It is easy to see that $$\phi'(t)=a+(b-a)\Big[1-\frac{(1-q)}{qe^{(b-a)t}+(1-q)}\Big],$$ $$\phi''(t)=(b-a)^2u(t)\big(1-u(t)\big),~\text{where},~ u(t)=\frac{(1-q)}{qe^{(b-a)t}+(1-q)}.$$ Since $u(t)\in[0,1]$, $u(t)\big(1-u(t)\big)\leq \frac{1}{4}$. Thus, $\phi''(t)\leq \frac{(b-a)^2}{4}$. Also, observe that $\phi(0)=\phi'(0)=0$. From Taylor's expansion upto the second order, for some $u\in(0,t)$, $$\phi(t)=\phi(0)+t\phi'(0)+\frac{t^2}{2}\phi''(u)\leq \frac{t^2(b-a)^2}{8}.$$ This concludes the proof. 
+\end{proof}
+
+\begin{cor}[Hoeffding's Inequality]
+\label{Cor_Hoeffding}
+Let $\{X_i,~1\leq i\leq m\}$ be independent random variables such that $X_i\in[a_i,b_i]$, for $a_i<b_i$, $i\in[m]$. Let $S_m=\sum\limits_{i=1}^{m}X_i$, $a=(a_1,\hdots,a_m),~b=(b_1,\hdots,b_m)$ and $||a-b||=\sqrt{\sum\limits_{i=1}^{m}(a_i-b_i)^2}$. Then, for any $\epsilon>0$,
+\begin{equation}
+\label{Ineq_Hoeffding1}
+\mathbb{P}\big[S_m-\mathbb{E}[S_m]\geq \epsilon \big]\leq e^{-\frac{2\epsilon^2}{||-a-b||^2}}, 
+\end{equation}
+\begin{equation}
+\label{Ineq_Hoeffding2}
+\mathbb{P}\big[S_m-\mathbb{E}[S_m]\leq -\epsilon \big]\leq e^{-\frac{2\epsilon^2}{||-a-b||^2}}. 
+\end{equation}
+In particular, 
+\begin{equation}
+\label{Ineq_Hoeffding3}
+\mathbb{P}\big[\big\vert S_m-\mathbb{E}[S_m]\big\vert \geq \epsilon \big]\leq 2e^{-\frac{2\epsilon^2}{||-a-b||^2}}.
+\end{equation}
+\end{cor}
+\begin{proof}
+First we prove the inequality (\ref{Ineq_Hoeffding1}).For any $t>0$, 
+\begin{flalign*}
+\mathbb{P}\big[S_m-\mathbb{E}[S_m]\geq \epsilon \big]&\stackrel{(a)}{\leq }e^{-t\epsilon}\mathbb{E}\big[e^{t(S_m-\mathbb{E}[S_m])}\big]\\
+&\stackrel{(b)}{= }e^{-t\epsilon}\prod\limits_{i=1}^{m}\mathbb{E}\big[e^{t(X_i-\mathbb{E}[X_i])}\big]\\
+&\stackrel{(c)}{\leq }e^{-t\epsilon}\prod\limits_{i=1}^{m}e^{\frac{t(b_i-a_i)^2}{8}}\\
+&\stackrel{}{= }e^{-t\epsilon}e^{\sum\limits_{i=1}^{m}\frac{t(b_i-a_i)^2}{8}}\stackrel{(d)}{\leq}e^{\frac{-2\epsilon^2}{||a-b||^2}},
+\end{flalign*}
+where, $(a)$ follows from Lemma \ref{Lem_Markov}, $(b)$ follows from the fact that the random variables are independent, $(c)$ follows from Theorem \ref{Th_Hoeffding} and $(d)$ follows by choosing $t=\frac{4\epsilon}{||a-b||^2}$. Thus, (\ref{Ineq_Hoeffding1}) follows. The inequality (\ref{Ineq_Hoeffding2}) follows in the same way. Finally, (\ref{Ineq_Hoeffding2}) follows by invoking the union bound. 
+\end{proof}
+
+\begin{cor}
+Fix $\epsilon>0$. Let $S:=\{X_i,~1\leq i\leq m\}$ be i.i.d. random variables. For any hypothesis $h:X\mapsto\{0,1\}$, the following holds:
+\begin{equation}
+\label{Hoeff_Cor_1}
+\mathbb{P}\big[\hat{R}(h)-R(h)\geq \epsilon \big]\leq e^{-2m\epsilon^2}, 
+\end{equation}
+\begin{equation}
+\label{Hoeff_Cor_2}
+\mathbb{P}\big[\hat{R}(h)-R(h) \leq -\epsilon \big]\leq e^{-2m\epsilon^2}. 
+\end{equation}
+In particular, 
+\begin{equation}
+\label{Hoeff_Cor_3}
+\mathbb{P}\big[\big\vert \hat{R}(h)-R(h) \big\vert \geq \epsilon \big]\leq 2e^{-2m\epsilon^2}.
+\end{equation}
+\end{cor}
+
+\begin{proof}
+The result follows immediately from \ref{Cor_Hoeffding}.
+\end{proof}
+
+\begin{cor}[Generalization Bound-Single Hypothesis]
+\label{Cor_Hoeff_SingleHyp}
+Fix a hypothesis $h:\mathcal{X}\mapsto \{0,1\}$. Then, for any $\delta>0$, the inequality holds with probability atleast $1-\delta$: $$|R(h)-\hat{R}(h)|\leq\sqrt{\frac{\log \frac{2}{\delta}}{2m}}.$$ 
+\end{cor}
+
+\begin{exmp}[Tossing a Biased Coin]
+Consider a coin with $\mathbb{P}[\text{Head}]=p$. Let the hypothesis $h$ be such that that $h(x)=\text{Head}$ for all $x$. Then, the generalization bound $R(h)=\mathbb{E}[1_{h(X_i)\neq Y_i}]=\mathbb{E}[1_{Y_i \neq \text{Head}}]=1-p$. From Corollary \ref{Cor_Hoeff_SingleHyp}, $$\Big\vert p-\frac{1}{m}\sum\limits_{i=1}^{m}1_{\{h(X_i)\neq Y_i\}}\Big\vert \leq \sqrt{\frac{\log \frac{2}{\delta}}{2m}}.$$
+\end{exmp}
+
+\begin{rem}
+In general, $h_S$ is a random variable. Hence, $R(h_S),~\hat{R}(h_S)$ are also random variables.
+\end{rem}
+
+\begin{thm}[Learning bound- finite $|\sH|<\infty$, inconsistent case]
+\label{Th_LearnBnd_Incon}
+Let $\sH$ be a finite hypothesis set. Then, for any $\delta>0$, with probability atleast $1-\delta$, the following holds: $$\big\vert R(h_S)-\hat{R}(h_S) \big\vert \leq \sqrt{\frac{\log |\sH|+\log \frac{2}{\delta}}{2m}}.$$
+\end{thm}
+\begin{proof}
+The result follows directly from the result for single hypothesis (Corollary \ref{Cor_Hoeff_SingleHyp}) and applying union bound. 
+\end{proof}
+
+\begin{rem}
+Several observations follow from the result in Theorem \ref{Th_LearnBnd_Incon}. 
+\begin{enumerate}
+\item The term $\log |\sH|$ appearing in the learning bound has the following  interpretation: $\log |\sH|$ corresponds to the number of bits required to represent $\sH$.
+\item Large sample size guarantees tighter generalization bound.
+\item The bound increases only logarithmically in $|\sH|$.
+\item The bound is worse than the bound in consistent case. In fact, quadratically larger number of samples are required for the same guarantee. 
+\item There is a trade off between empirical error and the size of the hypothesis set.
+\item For similar empirical error, use a smaller hypothesis set (\textit{Occam's razor principle}). 
+\end{enumerate}
+\end{rem}
+
+
+\section{Generalities}
+
+\subsection{Deterministic versus Stochastic}
+A generalization of the supervised learning scenario that we discussed till forth is as follows. The training data is a labelled sample $S$ drawn i.i.d. according to distribution $D$ on $\mathcal{X}\times\mathcal{Y}.$ The learning problem is to find a hypothesis $h\in\sH$ such that the generalization error $$R(h)=\mathbb{E}[1_{{H(X)\neq Y}}]$$ is small. This is the stochastic scenario. If the label can be uniquely determined by some measurable function $f:\mathcal{X}\mapsto \mathcal{Y}$ (with probability one), then the scenario is called deterministic. In this case, it suffices to consider distribution $D$ over $\mathcal{X}$ alone.
+
+\begin{defn}[Agnostic PAC-learning]
+Let $\sH$ be a hypothesis set. $\mathcal{A}$ is an agnostic PAC-learning algorithm if there exists a polynomial function $poly(.,.,.,.)$ such that for any $\delta>0$, $\epsilon>0$ and for all distributions $D$ on $\mathcal{X}\times \mathcal{Y}$, the following holds for any $m\geq poly\big(\frac{1}{\epsilon},\frac{1}{\delta},n,size(c)\big)$: $$\mathbb{P}\big[R(h_S)-\min\limits_{h\in\sH}R(h)\leq \epsilon\big]\geq 1-\delta.$$Further, if $\mathcal{A}$ runs in $poly\big(\frac{1}{\epsilon},\frac{1}{\delta},n,size(c)\big)$, it is said to be an efficient agnostic PAC learning algorithm.
+\end{defn}
+
+\subsection{Bayes Error and Noise}
+In the deterministic case, by definition, there exists a hypothesis $h$ such that the generalization error $R(h)=0$. But for the stochastic case, there is a non-zero error for any hypothesis $h$. This prompts to define Bayes error.
+
+\begin{defn}
+Given a distribution $D$ over $\mathcal{X}\times \mathcal{Y}$, the Bayes error $R^*$ is defined as $$R^*=\inf\limits_{\text{measurable}~ h }R(h).$$ A hypothesis $h$ with $R(h)=R^*$ is called a Bayes hypothesis or Bayes classifier.
+\end{defn}
+
+By definition, $R^*=0$ in the deterministic case. For the stochastic case, $R^*\neq 0$.
+
+\begin{thm}
+The Bayes hypothesis $h_B(x)=\text{arg}\max\limits_{y}\mathbb{P}[y|x]$, $x\in\mathcal{X}$.
+\end{thm}
+\begin{proof}
+ Note that,
+\begin{flalign*}
+1-R^*&=\sup\limits_{h} [1-R(h)]\\
+&=\sup\limits_{h}\mathbb{E}\big[1_{\{h(X)\neq Y\}}\big]\\
+&=\sup\limits_{h}\int \sum\limits_{h}1_{\{y=h(x)\}}\mathbb{P}[y|x]dF(x).
+\end{flalign*}
+The result follows.
+\end{proof}
+\end{document}
