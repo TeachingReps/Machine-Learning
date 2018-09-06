@@ -1,0 +1,156 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+	\sffamily
+	\title{Lecture 6}
+	\maketitle
+	\textbf{\\RKHS Theorem Proof:}
+	\\	
+	$$\Phi(x) = \chi \rightarrow \rm I\!R$$
+	$$x'\rightarrow K(x,x')$$
+	$$i.e.~\Phi_x(x')=K(x,x')$$
+	$H=\bar{H_o}$
+	\\\\
+	\textbf{Properties of the $<.,.>$ :}
+	\begin{itemize}
+		\item \textbf{Symmetric:} By the definition of PDS.
+		\item By PSD, $<f,f>~\geq 0$
+		\item \textbf{Definiteness:} $<f,\Phi_x>^2~\leq~<f,f><\Phi_x,\Phi_x>$
+		\item \textbf{Bilinear:} $<af+bg,ch+dk>~=~ac<f,h>+ad<f,k>+bc<g,h>+bd<g,k>$ 
+	\end{itemize}
+	.\\
+	\textbf{Reproducing:}
+	$$f~\epsilon~H_o~:~f=\sum_{i\epsilon I}a_i\Phi_{x_i}$$
+	\textbf{Verify:} $f(x)=<f(.),K(x,.)>$
+	\\\\
+	LHS: $$f(x)=\sum_{i\epsilon I}a_i\Phi_{x_i}(x)=\sum_{i\epsilon I}a_i K(x_i,x)$$
+	RHS: $$<\sum_{i\epsilon I}a_i\Phi_{x_i},\Phi_x>=\sum_{i\epsilon I}a_iK(x_i,x)$$
+	\\
+	\textbf{Normalization of PDS Kernels:}
+	$$K':\chi \times \chi \rightarrow \rm I\!R~~~~PDS~Kernel$$
+	$$K:\chi \times \chi \rightarrow \rm I\!R$$
+	\[
+	K(x,x')=
+	\begin{cases}
+	0 \text{ if } K(x,x')=0 \text{ or } K'(x,x)=0 \\
+	\frac{K'(x,x')}{\sqrt{K'(x,x)\sqrt{K'(x',x')}}}
+	\end{cases}
+	\]
+	\textbf{Remarks :}
+	$$K(x,x)=1~~\forall~x~\epsilon~\chi~~~\{K(x,x)=0\}$$
+	\textbf{H.W.}$$~~K'(x,x')=exp(\frac{<x,x'>}{\sigma^2})$$
+	$$\text{Then show that, }K(x,x')=exp(\frac{-||x-x'||^2}{2\sigma^2})$$
+	\\
+	\textbf{Lemma: Normalized PDS Kernels:}\\
+	"Let $K'$ be PDS kernel, then the normalized kernel $K$ is also PDS."\\
+	\textbf{Proof:}
+	$$\text{Without loss of generality, we can assume }K'(x_i,x_i)~\geq~0~~~~\forall~i~\epsilon~[m]$$
+	$$\sum_{i,j=1}^{m}c_ic_jK(x_i,x_j)=\sum c_ic_j\frac{K'(x_i,x_j)}{\sqrt{K'(x_i,x_i)}\sqrt{K'(x_j,x_j)}}$$
+	$$\implies\sum c_ic_jK'(x_i,x_j)~\geq~0~\text{ Since K' is PDS, Here is proved, Lets look some other forms.}$$
+	$$\implies\sum c_ic_j\frac{<\Phi_{x_i},\Phi_{x_j}>}{||\Phi_{x_i}||.||\Phi_{x_j}||}$$
+	$$\implies\sum c_ic_j<\frac{\Phi_{x_i}}{||\Phi_{x_i}||},\frac{\Phi_{x_j}}{||\Phi_{x_j}||}> \text{ which is, }$$
+	$$||\sum_{i=1}^{m}\frac{\Phi_{x_i}}{||\Phi_{x_i}||}||^2~\geq~0$$
+	\\
+	$\rightarrow$ Advantages of working with kernel is that no explicit definition of $\Phi$ is needed.\\\\
+	$\rightarrow$ \textbf{Advantages of working with explicit $\Phi$ are}:
+	\begin{itemize}
+		\item For primal method in various optimization problems.
+		\item To derive an approximation based on $\Phi$
+		\item Theoretical analysis where $\Phi$ is more convenient.
+	\end{itemize}
+	\textbf{Empirical kernel map:}
+	$\Phi$ associated to a PDS K is a feature mapping $\Phi$  $\chi \rightarrow  \mathbb{R}^m $ defined $\forall x$ in $\chi $ by
+	
+	$$ \Phi_{x_i}= \left[\begin{array}{ccc} K(x,x_1) \\ \vdots \\  K(x,x_m) \end{array} \right ] $$
+	
+	\begin{enumerate}
+		\item 
+		Recall $\Phi_{x_i} =$ \textbf{K} $e_i$ [$e_i$ is the unit (column) vector along $i^{th}$ direction]
+		$$\implies <\Phi_{x_i},\Phi_{x_j}>~~=~~e_i^T  \textbf{K}\textbf{K} e_j $$
+		$$\implies <\sum_{i} a{i}\Phi_{x_i}, \sum_{j} b_{j}\Phi_{x_j}> ~~=~~\sum_{i,j} a_{i} b_{j} (K^{2})_{ij} $$
+		
+		\item 
+		$K^{\dagger1/2}$ is a SPDS matrix such that ${(K^{\dagger1/2})}^{2}= K^{\dagger}$ is a pseudo-inverse of K.
+		
+		If K is invertible then $K^{\dagger}$= $K^{-1}$
+		
+		Let $\Psi_{x} = (K^{\dagger1/2}) \Phi_x$
+		
+		$$ \implies <\Psi_{x_i},\Psi_{x_j}>~~=~~< (K^{\dagger1/2})Ke_{i},(K^{\dagger1/2})Ke_{j}>
+		=~~e_i^T  KK^{\dagger}K e_j~~=~~e_i^T  \textbf{K} e_j $$
+		
+		$$\implies <\sum_{i} a{i}\Psi_{x_i}, \sum_{j} b_{j}\Psi_{x_j}> ~~=~~\sum_{i,j} a_{i} b{j} K_{ij} $$
+		
+		\item 
+		Let $\Omega_{x} = K^{\dagger} \Phi_x$
+		
+		$$ \implies <\Omega_{x_{i}}, \Omega_{x_{j}}>~~=~~ <K^{\dagger}Ke_{i}, K^{\dagger}Ke_{j}>$$
+		$$= e_{i}^{T}e_{j}~~~~,if ~K~is ~invertible  $$
+	\end{enumerate}
+	
+	\textbf{Theorem [Proof:HW]: Closure properties of PDS kernels}
+	
+	PDS kernels are closed under :
+	\vskip 0.5 cm
+	
+	(i) Addition: If $K_{1}$ and $K_{2}$ are PDS, so is$ K_{1}+K_{2}.$
+	
+	\vskip 0.5 cm
+	(ii)Product: If $K_{1}$ and $K_{2}$ are PDS, so is $K_{1}K_{2}$.
+	\vskip 0.5 cm
+	
+	(iii)Tensor product: If $K_{1}$ and$ K_{2}$ are PDS, so is $K_{1}\otimes K_{2}. $
+	
+	$[Note:K_1(x_1,x_2)\otimes K_2(x'_1,x'_2) = K_1(x_1,x_2)K_2(x'_1,x'_2)]$
+					\vskip 0.5 cm
+					
+					(iv) Point-wise limit: if $K_{n} $is PDS $\forall n \in N $ then $\lim_{n \to \infty } K_{n}$ is also PDS.
+					
+					\vskip 0.5 cm
+					(v) Composition with power series: If K is PDS then $\sum_{n=0}^{\infty} a_{n}K^{n} $is also a PDS.
+					\vskip 0.5 cm
+					
+					\textbf{Kernel based algorithms:}
+					
+					SVMs with PDS kernel
+					\vskip 0.5 cm
+					\begin{equation}
+					max_{\alpha}\sum_{i=1}^{m}\alpha_{i} - \frac{1}{2} \sum_{i,j=1}^{m}\alpha_{i}\alpha_{j}y_{i}y_{j}K(x_{i},x_{j}) \nonumber
+					\end{equation}
+					such that $0 \leq\alpha_{i}\leq C \forall i \in [m]$
+					
+					\begin{align}
+					\sum_{i=1}^{m}\alpha_{i}y_{i}=0\\ \nonumber
+					h(x)=sign(\sum_{i=1}^{m}\alpha_{i}y_{i}K(x_{i},x_{j})+b)\\ \nonumber
+					b= y_{i}- \sum_{j=1}^{m}\alpha_{j}y_{j}K(x_{i},x_{j}) \text{for any }  x_{i} \text{such that }  0 < \alpha_{i}<C \nonumber 
+					\end{align}
+					\vskip 0.5 cm
+					\textbf{Representer theorem}
+					
+					Let K:$\chi \rightarrow \rm I\!R$ be a PDS kernel and H its corresponding RHKS. Then for any non decreasing function $G:\rm I\!R  \rightarrow \rm I\!R$ and any loss function $\rm I\!R ^{m} \rightarrow \rm I\!R \cup \{+\infty\},$ the opimization problem
+			
+			$$ argmin_{h \in H}F(h) = argmin_{h \in H} G(||h||_{H}) + L(h(x_1),...,h(x_m))$$
+			
+			admits a solution of the form $h^{*} = \sum_{i=1}^{m} K(x_{i},\cdot)$
+			
+			If G is further assumed to be increasing, then any solution has this form. 
+			\vskip 0.5 cm
+			
+			\textbf{Proof:}
+			\vskip 0.5 cm
+			Let $H_{1}= span(K(x_{i},\cdot)|i \in [m])$
+			
+			\begin{align}
+			H=H_1\oplus H_{1}^{\perp}\\ \nonumber	
+			h=h_{1}+h_{1}^{\perp} \\ \nonumber
+			\implies ||h||_{H}=||h_{1}||_{H} + ||h_{1}^{\perp}||_{H} \\ \nonumber
+			\implies G(||h_{1}||_{H} ) \leq G||h||_{H} \\ \nonumber
+			h(x_{i})= \langle h(\cdot), K(x_{i}, \cdot)\rangle = \langle h_{1}+h_{1}^{\perp}, K_{x_{i}}\rangle = \langle h_{1},K_{x{i}}\rangle   \\ \nonumber
+			(\because \langle h_{1}^{\perp}, K_{x_{i}} \rangle=0)\\ \nonumber
+			=h_{1}(x_{i})\\ \nonumber
+			\therefore L(h(x_{1}),...,h(x_{m})= L(h_{1}(x_{1}),...,h_{1}(x_{m}) \nonumber
+			\end{align}
+			
+		\end{document}
